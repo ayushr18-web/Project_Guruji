@@ -1,26 +1,891 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Updated background to be more transparent for texture overlay */
+    --background: 42 36% 93% / 0.9;
+    --foreground: 240 10% 3.9%;
+    --card: 42 36% 95% / 0.95;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 42 36% 95% / 0.98;
+    --popover-foreground: 240 10% 3.9%;
+
+    /* Updated primary color to amber/saffron */
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 42 20% 90% / 0.9;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 42 20% 88% / 0.9;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 42 25% 88% / 0.9;
+    --accent-foreground: 30 60% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 42 25% 85% / 0.8;
+    --input: 42 25% 85% / 0.95;
+    --ring: 30 100% 50%;
+    --radius: 0.5rem;
+
+    /* Spiritual theme colors - default saffron */
+    --spiritual-saffron: 30 100% 50%;
+    --spiritual-gold: 36 100% 50%;
+    --spiritual-amber: 45 100% 50%;
+    --spiritual-ochre: 30 59% 53%;
+    --spiritual-maroon: 0 100% 27%;
+    --spiritual-purple: 270 50% 40%;
+    --spiritual-indigo: 240 100% 50%;
+
+    /* Chart colors */
+    --chart-1: 240 5.9% 10%;
+    --chart-2: 30 100% 50%;
+    --chart-3: 217 91% 60%;
+    --chart-4: 142 71% 45%;
+    --chart-5: 47 100% 50%;
+  }
+
+  .dark {
+    /* Updated dark mode background to complement the texture */
+    --background: 30 25% 8% / 0.9;
+    --foreground: 42 36% 95%;
+    --card: 30 25% 10% / 0.95;
+    --card-foreground: 42 36% 95%;
+    --popover: 30 25% 8% / 0.98;
+    --popover-foreground: 42 36% 95%;
+
+    /* Updated primary color for dark mode */
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 30 15% 15% / 0.9;
+    --secondary-foreground: 42 36% 95%;
+    --muted: 30 15% 12% / 0.9;
+    --muted-foreground: 42 20% 65%;
+    --accent: 30 20% 15% / 0.9;
+    --accent-foreground: 42 36% 95%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 30 15% 18% / 0.8;
+    --input: 30 15% 18% / 0.95;
+    --ring: 30 100% 50%;
+  }
+
+  /* Saffron Theme - Default */
+  .theme-saffron {
+    --primary: 30 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --ring: 30 100% 50%;
+    --accent: 30 10% 95%;
+    --accent-foreground: 30 60% 10%;
+    --border: 30 5.9% 90%;
+  }
+
+  /* Gold Theme */
+  .theme-gold {
+    --primary: 36 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --ring: 36 100% 50%;
+    --accent: 36 10% 95%;
+    --accent-foreground: 36 60% 10%;
+    --border: 36 5.9% 90%;
+  }
+
+  /* Maroon Theme */
+  .theme-maroon {
+    --primary: 0 100% 27%;
+    --primary-foreground: 0 0% 98%;
+    --ring: 0 100% 27%;
+    --accent: 0 10% 95%;
+    --accent-foreground: 0 60% 10%;
+    --border: 0 5.9% 90%;
+  }
+
+  /* Purple Theme */
+  .theme-purple {
+    --primary: 270 50% 40%;
+    --primary-foreground: 0 0% 98%;
+    --ring: 270 50% 40%;
+    --accent: 270 10% 95%;
+    --accent-foreground: 270 60% 10%;
+    --border: 270 5.9% 90%;
+  }
+
+  /* New Deep Ochre Theme */
+  .theme-ochre {
+    --primary: 30 59% 53%;
+    --primary-foreground: 0 0% 98%;
+    --ring: 30 59% 53%;
+    --accent: 30 10% 95%;
+    --accent-foreground: 30 60% 10%;
+    --border: 30 5.9% 90%;
+  }
+
+  /* New Indigo Theme */
+  .theme-indigo {
+    --primary: 240 100% 50%;
+    --primary-foreground: 0 0% 98%;
+    --ring: 240 100% 50%;
+    --accent: 240 10% 95%;
+    --accent-foreground: 240 60% 10%;
+    --border: 240 5.9% 90%;
+  }
+
+  /* Add these to your existing globals.css */
+  body {
+    @apply scroll-smooth;
+    /* Ensure body doesn't have its own background */
+    background: transparent !important;
+  }
+
+  /* Smooth scrolling for the whole page */
+  html {
+    scroll-behavior: smooth;
+    /* Ensure html doesn't interfere with fixed background */
+    background: transparent !important;
+  }
+
+  /* Add a transition for the header */
+  header {
+    @apply transition-all duration-300 ease-in-out;
   }
 }
 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Enhanced content backgrounds for better readability over texture */
+.content-overlay {
+  background: hsl(var(--background));
+  backdrop-filter: blur(2px);
+}
+
+/* Card backgrounds with better opacity for texture visibility */
+.card-overlay {
+  background: hsl(var(--card));
+  backdrop-filter: blur(1px);
+}
+
+/* Utility classes for consistent colors */
+.bg-spiritual-gradient {
+  @apply bg-gradient-to-r from-amber-500 to-orange-600;
+}
+
+.text-spiritual-primary {
+  @apply text-amber-700 dark:text-amber-400;
+}
+
+.border-spiritual {
+  @apply border-amber-100 dark:border-amber-900/30;
+}
+
+.bg-spiritual-light {
+  @apply bg-amber-50/90 dark:bg-amber-900/20;
+}
+
+.bg-spiritual-header {
+  @apply bg-amber-50/95 dark:bg-amber-950/40;
+}
+
+.bg-spiritual-footer {
+  @apply bg-gradient-to-r from-amber-50/90 to-amber-100/90 dark:from-amber-950/40 dark:to-amber-900/30;
+}
+
+/* Spiritual background patterns - now work with the fixed texture */
+.bg-spiritual-pattern {
+  background-image: url("/images/subtle-pattern.png");
+  background-repeat: repeat;
+  background-size: 200px;
+  background-blend-mode: overlay;
+}
+
+.bg-manuscript {
+  background-image: url("/ancient-spiritual-manuscript.png");
+  background-repeat: repeat;
+  background-size: 300px;
+  background-blend-mode: overlay;
+  opacity: 0.07;
+}
+
+/* Decorative elements */
+.decorative-border {
+  position: relative;
+}
+
+.decorative-border::before,
+.decorative-border::after {
+  content: "";
+  position: absolute;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary)), transparent);
+  width: 80%;
+  left: 10%;
+}
+
+.decorative-border::before {
+  top: 0;
+}
+
+.decorative-border::after {
+  bottom: 0;
+}
+
+/* Ornamental divider */
+.ornamental-divider {
+  position: relative;
+  height: 20px;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.ornamental-divider::before {
+  content: "☸";
+  font-size: 1.5rem;
+  color: hsl(var(--primary));
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: hsl(var(--background));
+  padding: 0 1rem;
+  z-index: 10;
+}
+
+.ornamental-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.5), transparent);
+  z-index: 1;
+}
+
+/* Meditation visualizer */
+.meditation-visualizer {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.meditation-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.8), transparent);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: pulse 4s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0.7;
+  }
+}
+
+/* Book reader styles */
+.book-page {
+  background-color: hsl(var(--background));
+  padding: 2rem;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+  backdrop-filter: blur(2px);
+}
+
+.book-page p {
+  margin-bottom: 1.5rem;
+}
+
+.book-page h1,
+.book-page h2,
+.book-page h3 {
+  color: hsl(var(--primary));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Story reader styles */
+.story-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.story-content p {
+  margin-bottom: 1.5rem;
+}
+
+.story-content h2,
+.story-content h3 {
+  color: hsl(var(--primary));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.story-content blockquote {
+  border-left: 4px solid hsl(var(--primary) / 0.5);
+  padding-left: 1rem;
+  font-style: italic;
+  margin: 1.5rem 0;
+}
+
+/* Teaching styles */
+.teaching-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.teaching-content p {
+  margin-bottom: 1.5rem;
+}
+
+.teaching-content h2,
+.teaching-content h3 {
+  color: hsl(var(--primary));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.teaching-content blockquote {
+  border-left: 4px solid hsl(var(--primary) / 0.5);
+  padding-left: 1rem;
+  font-style: italic;
+  margin: 1.5rem 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+/* Panchang styles */
+.panchang-card {
+  background: linear-gradient(135deg, hsl(var(--background)), hsl(var(--card)));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  backdrop-filter: blur(2px);
+}
+
+.panchang-date {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: hsl(var(--primary));
+  margin-bottom: 1rem;
+}
+
+.panchang-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed hsl(var(--border));
+}
+
+.panchang-detail:last-child {
+  border-bottom: none;
+}
+
+.panchang-label {
+  font-weight: 500;
+}
+
+.panchang-value {
+  color: hsl(var(--primary));
+}
+
+/* Audio player styles */
+.audio-player {
+  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--background)));
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  backdrop-filter: blur(2px);
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.audio-progress {
+  width: 100%;
+  height: 4px;
+  background-color: hsl(var(--secondary));
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.audio-progress-bar {
+  height: 100%;
+  background-color: hsl(var(--primary));
+  transition: width 0.1s linear;
+}
+
+.audio-time {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  min-width: 45px;
+  text-align: center;
+}
+
+/* Mini player */
+.mini-player {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  width: 300px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  backdrop-filter: blur(4px);
+}
+
+.mini-player-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.mini-player-title {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mini-player-author {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Chat styles */
+.chat-message {
+  margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.chat-message-user {
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 0.75rem 0.75rem 0 0.75rem;
+  padding: 0.75rem 1rem;
+  max-width: 80%;
+  margin-left: auto;
+  backdrop-filter: blur(2px);
+}
+
+.chat-message-bot {
+  background-color: hsl(var(--muted));
+  border-radius: 0.75rem 0.75rem 0.75rem 0;
+  padding: 0.75rem 1rem;
+  max-width: 80%;
+  backdrop-filter: blur(2px);
+}
+
+.chat-input {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: hsl(var(--background));
+  border-top: 1px solid hsl(var(--border));
+  backdrop-filter: blur(2px);
+}
+
+/* Notification styles */
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-title {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.notification-time {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+}
+
+.notification-unread {
+  background-color: hsl(var(--primary) / 0.05);
+}
+
+/* Z-index fixes */
+.navigation-menu-content {
+  z-index: 100 !important;
+}
+
+/* Page content should be below navigation */
+.page-content {
+  position: relative;
+  z-index: 10;
+}
+
+/* Header should be above page content */
+header {
+  position: relative;
+  z-index: 50;
+}
+
+/* Navigation menu should be above everything */
+.navigation-menu {
+  position: relative;
+  z-index: 100;
+}
+
+/* Mobile styles */
+@media (max-width: 640px) {
+  .book-page,
+  .story-content,
+  .teaching-content {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .mini-player {
+    width: calc(100% - 2rem);
+    bottom: 4rem;
+  }
+
+  /* Improved touch targets for mobile */
+  button,
+  a,
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Better spacing for mobile forms */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+
+  /* Adjust spacing for mobile navigation */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Ensure content doesn't get hidden under bottom nav */
+  main {
+    padding-bottom: 5rem;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  /* Adjust font sizes for tablets */
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  p,
+  li {
+    font-size: 1rem;
+  }
+}
+
+/* Ensure navigation menu appears above other content */
+.navigation-menu {
+  position: relative;
+  z-index: 50;
+}
+
+/* Fix for mobile bottom navigation */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background-color: hsl(var(--background));
+  border-top: 1px solid hsl(var(--border));
+  backdrop-filter: blur(4px);
+}
+
+/* Mobile Bottom Navigation Alignment Fix */
+@media (max-width: 768px) {
+  /* Ensure proper spacing for mobile bottom nav items */
+  .mobile-bottom-nav a,
+  .mobile-bottom-nav button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem;
+  }
+
+  /* Adjust main content padding to account for bottom nav */
+  .pb-16 {
+    padding-bottom: 3.5rem !important; /* 56px to match nav height */
+  }
+}
+
+/* Add these styles to the end of your globals.css file */
+
+/* Dynamic Header Styles */
+#main-header {
+  transition: all 0.3s ease;
+}
+
+.header-scrolled {
+  height: 3.5rem !important; /* 56px */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.header-scrolled .h-8 {
+  height: 1.75rem !important; /* 28px */
+}
+
+.header-hidden {
+  transform: translateY(-100%);
+}
+
+/* Reading context specific styles */
+.reading-context #main-header.header-scrolled {
+  opacity: 0.9;
+}
+
+.reading-context #main-header.header-scrolled:hover {
+  opacity: 1;
+}
+
+/* Adjust content padding for fixed header */
+.reading-context .sticky {
+  top: 4rem;
+}
+
+/* Mobile Header Styles */
+@media (max-width: 768px) {
+  /* Adjust main content padding for mobile header */
+  body > div > div:first-child {
+    padding-top: 4rem; /* 64px for mobile header */
+  }
+
+  /* Ensure content doesn't overlap with mobile header */
+  .pt-16 {
+    padding-top: 4rem !important;
+  }
+}
+
+/* Side Panel Animations */
+.sheet-content {
+  animation: slide-in-from-right 0.3s ease-out;
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Quick Action Hover Effects */
+.quick-action {
+  transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Notification Badge Animation */
+.notification-badge {
+  animation: pulse-badge 2s infinite;
+}
+
+@keyframes pulse-badge {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--primary), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--primary), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary), 0);
+  }
+}
+
+/* Smooth transitions for mobile header */
+.mobile-header-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mobile Bottom Navigation - Reset all browser defaults */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none;
+  outline: none;
+}
+
+.mobile-bottom-nav * {
+  box-sizing: border-box;
+}
+
+.mobile-bottom-nav > div {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Ensure navigation is flush with viewport bottom */
+@supports (padding: max(0px)) {
+  .mobile-bottom-nav {
+    padding-bottom: max(0px, env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Override any potential browser defaults for mobile */
+@media (max-width: 768px) {
+  body {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Ensure main content has proper spacing */
+  main {
+    margin-bottom: 0 !important;
+    padding-bottom: 3.5rem !important; /* 56px for nav height */
+  }
+
+  /* Reset any potential iOS Safari bottom bar interference */
+  html {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Specific reset for the navigation container */
+  .fixed.bottom-0 {
+    bottom: 0 !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+/* Additional reset for specific mobile browsers */
+@media screen and (max-width: 768px) {
+  /* Chrome mobile address bar compensation */
+  .mobile-bottom-nav {
+    bottom: 0 !important;
+    position: fixed !important;
+  }
+
+  /* Safari mobile specific */
+  @supports (-webkit-touch-callout: none) {
+    .mobile-bottom-nav {
+      bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
+}
+
+/* Ensure grid layout doesn't add spacing */
+.mobile-nav-grid {
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }

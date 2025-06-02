@@ -53,3 +53,6 @@ LAnding PAge
 
 1. Categories (dynamic)
 2. Lost heritage  (dynamic)
+
+Theme 
+1. primary color -> 
