@@ -3,7 +3,7 @@ import { sidebarItems } from "../../constants/admin";
 
 const AdminSidebar = () => {
   return (
-    <div className="w-64 h-screen p-4 text-gray-800">
+    <div className="w-64 h-screen p-4 text-gray-800 overflow-y-auto bg-white">
       {sidebarItems.map((section) => (
         <div key={section.section} className="mb-6">
           <h2 className="text-sm font-bold text-black mb-3">{section.section}</h2>

@@ -19,11 +19,7 @@ const LoginForm = () => {
   console.log('Login mutation state:', loginMutation.isPending);
 
   return (
-        <form onSubmit={handleSubmit}>
-      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-      <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" type="password" />
-      <button type="submit">Login</button>
-    </form>
+       <div></div>
   );
 };
 
