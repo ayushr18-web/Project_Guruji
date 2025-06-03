@@ -1,9 +1,21 @@
+"use client";
+import { GenericTable } from "../components/Table";
+import { IBook } from "../types/books";
+import AddEditForm from "./components/AddEditForm";
+
 const Admin = () => {
     return (
-        <div className="flex ">
-        <h1 className="text-4xl font-bold mb-4">Admin Page</h1>
-        <p className="text-lg">This is the admin page.</p>
-        </div>
+        <AddEditForm />
+        // <GenericTable<IBook>
+        //     title="All E-books"
+        //     columns={[]}
+        //     rows={[]}
+        //     page={2}
+        //     rowsPerPage={10}
+        //     totalCount={20}
+        //     onPageChange={null}
+        //     onRowsPerPageChange={null}
+        // />
     );
-    }
-    export default Admin;
+}
+export default Admin;

@@ -3,6 +3,8 @@ import {
   Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Paper, TablePagination, Typography
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import theme from '@/app/theme/theme';
 
 export interface Column<T> {
   key: keyof T;
@@ -31,6 +33,8 @@ export const GenericTable = <T extends object>({
   onPageChange,
   onRowsPerPageChange,
 }: GenericTableProps<T>): JSX.Element => {
+  const theme = useTheme();
+
   const handleChangePage = (_: unknown, newPage: number) => {
     onPageChange(newPage);
   };
@@ -44,7 +48,7 @@ export const GenericTable = <T extends object>({
   };
 
   return (
-    <Paper>
+    <Paper color="card">
       {title && (
         <Typography variant="h6" component="div" sx={{ padding: 2 }}>
           {title}
@@ -55,7 +59,12 @@ export const GenericTable = <T extends object>({
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell key={column.key as string}>{column.label}</TableCell>
+                <TableCell
+                  key={column.key as string}
+                  // sx={{ color: theme.palette.secondary.contrastText }}
+                >
+                  {column.label}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
