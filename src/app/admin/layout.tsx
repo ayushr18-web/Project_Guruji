@@ -1,4 +1,3 @@
-// app/layout.tsx or app/login/layout.tsx
 'use client';
 
 import { ReactNode } from 'react';
