@@ -2,8 +2,8 @@
 
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AdminSidebar from '../components/AdminSidebar';
-import Header from '../components/Header';
+import AdminSidebar  from '../../../components/AdminSidebar';
+import Header from '../../../components/Header';
 
 const queryClient = new QueryClient();
 

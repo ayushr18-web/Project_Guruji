@@ -1,4 +1,3 @@
-
 const config = {
   darkMode: ["class"],
   content: [
@@ -25,8 +24,8 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#4a2e23", // Main brown from homepage
-          foreground: "#f0e6d2", // Cream text
+          DEFAULT: "#4a2e23",
+          foreground: "#f0e6d2",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -41,7 +40,7 @@ const config = {
           foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "#6b4423", // Lighter brown for accents
+          DEFAULT: "#6b4423",
           foreground: "#f0e6d2",
         },
         popover: {
@@ -52,7 +51,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Custom brown color palette
         brown: {
           50: "#faf8f5",
           100: "#f0e6d2",
@@ -65,7 +63,6 @@ const config = {
           800: "#4a2e23",
           900: "#3d251d",
         },
-        // Keep cream colors for footer and other elements
         cream: {
           50: "#fefdf8",
           100: "#fdf9f0",
@@ -101,6 +98,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
 
-export default config
+module.exports = config;

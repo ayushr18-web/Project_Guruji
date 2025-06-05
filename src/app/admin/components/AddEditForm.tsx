@@ -14,6 +14,7 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { PdfUploadSection } from "./PdfUploadSection";
 
 const categories = [
   { value: "", label: "Select a category" },
@@ -25,7 +26,7 @@ const categories = [
 
 const formats = [
   { value: "text", label: "Text (Sections & Chapters)" },
-  { value: "audio", label: "Audio" },
+  { value: "pdf", label: "PDF Document" },
   // Add more formats as needed
 ];
 
@@ -88,7 +89,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
   };
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box sx={{ p: 4,  backgroundColor: "#fdfaf6" }}>
       <Typography variant="h4" gutterBottom>
         Create New Book
       </Typography>
@@ -100,6 +101,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
             alignItems: "flex-start",
             flexDirection: { xs: "column", md: "row" },
             width: "100%",
+             backgroundColor: "#fdfaf6"
           }}
         >
           {/* Left Panel */}
@@ -172,12 +174,30 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                   ))}
                 </TextField>
               </Box>
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="subtitle1">Text Content</Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Save the book first, then use the "Manage Content" button to add sections and chapters.
-                </Typography>
-              </Box>
+              {watch("format") === "text" && (
+                <Box
+                  sx={{
+                    mt: 2,
+                    border: "1px solid #ccc",
+                    borderRadius: 2,
+                    p: 2,
+                    backgroundColor: "#fafafa",
+                  }}
+                >
+                  <Typography variant="subtitle1" gutterBottom>
+                    Text Content
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Save the book first, then use the "Manage Content" button to add sections and chapters.
+                  </Typography>
+                </Box>
+              )}
+
+             {watch("format") === "pdf" && (
+                <PdfUploadSection />
+              )}
+
+
               <TextField
                 {...register("tags")}
                 label="Tags"

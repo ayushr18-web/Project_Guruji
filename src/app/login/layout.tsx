@@ -3,7 +3,7 @@
 
 import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AdminSidebar from '../components/AdminSidebar';
+import AdminSidebar from '../../../components/AdminSidebar';
 
 const queryClient = new QueryClient();
 
