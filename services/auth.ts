@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { Api } from '../lib/api';
+import { API } from '../lib/api';
 
 type LoginPayload = {
   email: string;
@@ -15,6 +14,6 @@ type User = {
 
 export const AuthAPI = {
   login: (payload: LoginPayload) => {
-    return Api.login(payload);
+    return API.login(payload);
   },
 };

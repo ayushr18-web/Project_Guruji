@@ -66,10 +66,10 @@ declare module "@mui/material/styles" {
 const theme = createTheme({
   palette: {
     background: {
-      default: "hsl(42, 36%, 93%)", // Updated background to be more transparent for texture overlay
+      default: "blue", // Updated background to be more transparent for texture overlay
     },
     primary: {
-      main: "hsl(30, 100%, 50%)", // saffron
+      main: "rgb(74 46 35/var(--tw-text-opacity,1))", // saffron
       contrastText: "hsl(0, 0%, 98%)", // white for foreground
     },
     secondary: {
