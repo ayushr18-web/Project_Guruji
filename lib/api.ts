@@ -63,7 +63,10 @@ export const API = {
     return apiClient.get(`/books/${bookId}/chapters`);
   },
   
-  createChapter: (bookId: string, payload: Record<string, any>) => {
+  createChapter: (bookId: string, chapterId?: string, payload: Record<string, any>) => {
+    if(chapterId){
+      return apiClient.put(`/books/${bookId}/chapters/${chapterId}`, payload);
+    }
     return apiClient.post(`/books/${bookId}/chapters`, payload);
   },
 

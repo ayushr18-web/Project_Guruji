@@ -44,6 +44,7 @@ export const useChapters = (bookId: string) => {
 
 export const useCreateChaper = (
   bookId: string,
+  chapterId?: string,
   options?: {
     onSuccess?: (data: any) => void;
     onError?: (error: unknown) => void;
@@ -54,7 +55,13 @@ export const useCreateChaper = (
   return useMutation<any, unknown, any>({
     mutationFn: async (newChapter) => {
       try {
-        const response = await API.createChapter(bookId, newChapter);
+        let response;
+        if(chapterId) {
+           response = await API.createChapter(bookId, chapterId, newChapter);
+        }else{
+           response = await API.createChapter(bookId, undefined, newChapter);
+        }
+       
         return response.data as any;
       } catch (error) {
         throw error; // rethrow to let react-query handle error state
@@ -62,6 +69,36 @@ export const useCreateChaper = (
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['chapters', bookId] });
+      if (options?.onSuccess) options.onSuccess(data);
+    },
+    onError: (error) => {
+      if (options?.onError) options.onError(error);
+    },
+  });
+};
+
+
+export const useCreateSection = (
+  bookId: string,
+  chapterId: string,
+  options?: {
+    onSuccess?: (data: any) => void;
+    onError?: (error: unknown) => void;
+  }
+) => {
+  const queryClient = useQueryClient();
+
+  return useMutation<any, unknown, any>({
+    mutationFn: async (newChapter) => {
+      try {
+        const response = await API.createSection(bookId, chapterId, newChapter);
+        return response.data as any;
+      } catch (error) {
+        throw error; // rethrow to let react-query handle error state
+      }
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['sections', bookId, chapterId] });
       if (options?.onSuccess) options.onSuccess(data);
     },
     onError: (error) => {
@@ -107,6 +144,17 @@ export const useEditBook = ( bookId: string,
     onSuccess: () => {
       // Invalidate the books list to reflect changes
       queryClient.invalidateQueries({ queryKey: ['books-list'] });
+    },
+  });
+};
+
+
+export const useSections = (bookId: string, chapterId: string) => {
+  return useQuery({
+    queryKey: ['sections', bookId, chapterId],
+    queryFn: async (): Promise<Array<any>> => {
+      const response = await API.getSections(bookId, chapterId);
+      return response.data;
     },
   });
 };

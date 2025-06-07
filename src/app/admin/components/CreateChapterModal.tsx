@@ -16,8 +16,9 @@ import { useCreateChaper } from '../../../../hooks/useBook';
 interface CreateChapterModalProps {
   open: boolean;
   onClose: () => void;
-  onCreate?: (title: string, description: string) => void;
   bookId: string;
+  data?: any; // Adjust type as needed
+  chapterId?: string;
 }
 
 const inputStyles = {
@@ -42,11 +43,11 @@ const inputStyles = {
   },
 };
 
-const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ open, onClose, onCreate, bookId }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ data, open, onClose, bookId, chapterId }) => {
+  const [title, setTitle] = useState(data?.title || '');
+  const [description, setDescription] = useState(data?.description || '');
 
-  const createChapterMutation = useCreateChaper(bookId);
+  const createChapterMutation = useCreateChaper(bookId, chapterId);
 
   const handleCreate = () => {
     if (!title.trim()) {

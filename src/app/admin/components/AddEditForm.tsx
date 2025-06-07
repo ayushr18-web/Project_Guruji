@@ -88,7 +88,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
       title: initialData.title || "",
       author_name: initialData.author_name || "",
       description: initialData.description || "",
-      category_id: initialData.category_id || "",
+      category: initialData.category_id || "",
       book_format: initialData.book_format || "TEXT",
       tags: initialData.tags?.join(",") || "",
       featured: initialData.featured || false,
@@ -164,7 +164,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                   <Select
                     labelId="category-label"
                     id="category_id"
-                    {...register("category_id")} 
+                    {...register("category")} 
                     label="Category *"
                   >
                     {categories?.map((option: any) => (

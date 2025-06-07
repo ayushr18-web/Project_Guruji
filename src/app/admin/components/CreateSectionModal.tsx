@@ -19,7 +19,6 @@ interface CreateChapterModalProps {
   open: boolean;
   onClose: () => void;
   onCreate?: (title: string, description: string) => void;
-  bookId?: string;
 }
 
 const inputStyles = {
@@ -44,17 +43,17 @@ const inputStyles = {
   },
 };
 
-const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, onCreate, bookId }) => {
+const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, onCreate }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  console.log('CreateSectionModal rendered with bookId:', content);
 
   const handleCreate = () => {
     if (!title.trim()) {
       alert('Section title is required');
       return;
     }
+    onCreate?.(title, content);
   };
 
   return (
