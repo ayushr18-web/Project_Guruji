@@ -1,18 +1,20 @@
 "use client"
 
 import AddEditForm from "../../components/AddEditForm";
-import { useCreateBook } from "../../../../../hooks/useBook";
+import { useCreateBook, useGetCategories } from "../../../../../hooks/useBook";
+import { useRouter } from "next/navigation";
 
 const New = () => {
+    const router = useRouter();
     const { mutate: createBook, isPending, isSuccess, isError, error } = useCreateBook();
 
-    const handleSubmit = (data: any) => {
-        console.log("Form submitted with data:", data);
+    const { data: categories } = useGetCategories();
 
-        createBook(data, {
+    const handleSubmit = (data: any) => {
+
+        createBook({...data, tags: data?.tags?.split(","), category_id: data?.category_id}, {
             onSuccess: () => {
-                console.log("Book created successfully!");
-                // Optional: redirect, reset form, show toast, etc.
+                router.push("/admin/books");
             },
             onError: (err) => {
                 console.error("Failed to create book:", err);
@@ -21,7 +23,7 @@ const New = () => {
     };
 
     return (
-        <AddEditForm onSubmit={handleSubmit} isLoading={isPending} />
+        <AddEditForm onSubmit={handleSubmit} isLoading={isPending} categories={categories}/>
     );
 };
 

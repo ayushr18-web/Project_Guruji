@@ -9,6 +9,10 @@ import {
   MenuItem,
   Switch,
   FormControlLabel,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,17 +20,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PdfUploadSection } from "./PdfUploadSection";
 import Button from "../../../../components/Button";
 import CoverImageUpload from "./CoverImageUpload";
+import { IBook } from "../../../../types/books";
 
-const categories = [
-  { value: "", label: "Select a category" },
-  { value: "fiction", label: "Fiction" },
-  { value: "nonfiction", label: "Non-fiction" },
-  { value: "science", label: "Science" },
-];
-
-const book_types = [
-  { value: "text", label: "Text (Sections & Chapters)" },
-  { value: "pdf", label: "PDF Document" },
+const book_formats = [
+  { value: "TEXT", label: "Text (Sections & Chapters)" },
+  { value: "PDF", label: "PDF Document" },
 ];
 
 const formSchema = z.object({
@@ -34,7 +32,7 @@ const formSchema = z.object({
   author_name: z.string().min(1, "author_name is required"),
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
-  book_type: z.string().min(1, "book_type is required"),
+  book_format: z.string().min(1, "book_format is required"),
   tags: z.string().optional(),
   featured: z.boolean().optional(),
 });
@@ -43,8 +41,9 @@ export type FormData = z.infer<typeof formSchema>;
 
 export interface AddEditFormProps {
   isLoading: boolean;
-  onSubmit?: (data: FormData) => void;
-  initialData?: Partial<FormData>;
+  onSubmit?: (data: IBook) => void;
+  initialData?: Partial<IBook>;
+  categories?: any;
 }
 
 const inputStyles = {
@@ -74,8 +73,8 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
   onSubmit = null,
   initialData = {},
   isLoading = false,
+  categories
 }) => {
-  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -86,33 +85,25 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      author_name: "",
-      description: "",
-      category: "",
-      book_type: "text",
-      tags: "",
-      featured: false,
-      ...initialData,
+      title: initialData.title || "",
+      author_name: initialData.author_name || "",
+      description: initialData.description || "",
+      category_id: initialData.category_id || "",
+      book_format: initialData.book_format || "TEXT",
+      tags: initialData.tags?.join(",") || "",
+      featured: initialData.featured || false,
+      ...initialData, // Spread initialData to set other fields if needed
     },
   });
 
-  const onSubmitHandler = async (data: FormData) => {
-    setLoading(true);
-    try {
-      await onSubmit?.(data);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <Box sx={{ p: 4, backgroundColor: "#fdfaf6" }}>
       <Typography variant="h4" gutterBottom>
-        Create New Book
+        {initialData?.id ? "Create New Book" : "Edit Book"}
       </Typography>
 
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Box
           sx={{
             display: "flex",
@@ -126,7 +117,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
           <Box sx={{ flex: 2 }}>
             <Paper elevation={2} sx={{ p: 3, mb: 2 }}>
               <Typography variant="h6" gutterBottom>
-                Create Book 
+                Create Book
               </Typography>
 
               <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
@@ -162,43 +153,54 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 sx={inputStyles}
               />
 
-              <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                <TextField
-                  {...register("category")}
-                  label="Category *"
-                  select
-                  fullWidth
-                  margin="normal"
-                  error={!!errors.category}
-                  helperText={errors.category?.message}
-                  sx={{ flex: 1, minWidth: 220, ...inputStyles }}
-                >
-                  {categories.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
 
-                <TextField
-                  {...register("book_type")}
-                  label="Content book_type"
-                  select
+              <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                <FormControl
                   fullWidth
-                  margin="normal"
-                  error={!!errors.book_type}
-                  helperText={errors.book_type?.message}
+                  error={!!errors.category}
                   sx={{ flex: 1, minWidth: 220, ...inputStyles }}
                 >
-                  {book_types.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  <InputLabel id="category-label">Category *</InputLabel>
+                  <Select
+                    labelId="category-label"
+                    id="category_id"
+                    {...register("category_id")} 
+                    label="Category *"
+                  >
+                    {categories?.map((option: any) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>{errors.category?.message}</FormHelperText>
+                </FormControl>
+
+                <FormControl
+                  fullWidth
+                  error={!!errors.book_format}
+                  sx={{ flex: 1, minWidth: 220, ...inputStyles }}
+                >
+                  <InputLabel id="book-format-label">Book Format *</InputLabel>
+                  <Select
+                    labelId="book-format-label"
+                    id="book_format"
+                    {...register("book_format")}
+                    label="Book Format *"
+                    defaultValue={initialData.book_format || "TEXT"}
+                  >
+                    {book_formats.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>{errors.book_format?.message}</FormHelperText>
+                </FormControl>
               </Box>
 
-              {watch("book_type") === "text" && (
+
+              {watch("book_format") === "text" && (
                 <Box
                   sx={{
                     mt: 2,
@@ -217,7 +219,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 </Box>
               )}
 
-              {watch("book_type") === "pdf" && <PdfUploadSection />}
+              {watch("book_format") === "pdf" && <PdfUploadSection />}
 
               <TextField
                 {...register("tags")}

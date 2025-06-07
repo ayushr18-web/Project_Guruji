@@ -47,9 +47,36 @@ export const API = {
     return apiClient.get('/books', { params });
   },
 
+  getBookData: (bookId: string) => {
+    return apiClient.get(`/books/${bookId}`);
+  },
+
   createBook: (payload: Record<string, any>) => {
     return apiClient.post('/books', payload);
   },
 
+  updateBook: (bookId: string, payload: Record<string, any>) => {
+    return apiClient.put(`/books/${bookId}`, payload);
+  },
+
+  getChapters: (bookId: string) => {
+    return apiClient.get(`/books/${bookId}/chapters`);
+  },
+  
+  createChapter: (bookId: string, payload: Record<string, any>) => {
+    return apiClient.post(`/books/${bookId}/chapters`, payload);
+  },
+
+  createSection: (bookId: string, chapterId: string, payload: Record<string, any>) => {
+    return apiClient.post(`/books/${bookId}/chapters/${chapterId}/sections`, payload);
+  },
+
+  getSections: (bookId: string,  chapterId: string) => {
+    return apiClient.get(`/books/${bookId}/chapters/${chapterId}/sections`);
+  },
+
+  getCategories: () => {
+    return apiClient.get('/categories?type=BOOK&skip=0&limit=25&is_active=true');
+  },
   // Add other API calls here...
 };

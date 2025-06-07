@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { GenericTable, Column } from '../../../../components/Table';
-import { IBook } from '../../../../types/books';
 import { useBooks } from '../../../../hooks/useBook';
 import { useBookStore } from '../../../../store/bookStore';
 import ActionMenu from '../components/BookListMenu';
@@ -32,8 +31,8 @@ const UserTable = () => {
   const booksColumns: Column<any>[] = [
     { key: 'title', label: 'Title', render: (row) => <span>{row.title}</span> },
     { key: 'author_name', label: 'Author', render: (row) => <span>{row.author_name}</span> },
-    { key: 'tags', label: 'Tags', render: (row) => <div className='p-4 border-radius-2'>{row.tags.join(', ')}</div> },
-    { key: 'type', label: 'Type', render: (row) => <span>{row.format}</span> },
+    { key: 'tags', label: 'Tags', render: (row) => <div className='p-4 border-radius-2'>{row?.tags?.join(',')}</div> },
+    { key: 'type', label: 'Type', render: (row) => <span>{row.book_format}</span> },
     { key: 'status', label: 'Published', render: (row) => <span>{row.status}</span> },
     {
       key: 'actions',
@@ -59,12 +58,12 @@ const UserTable = () => {
         </button>
       </div>
     </div>
-      <GenericTable<IBook>
+      <GenericTable<any>
         title="All E-Books"
         columns={booksColumns}
-        rows={books}
+        rows={books.items || []}
         page={page}
-        totalCount={data?.totalCount || 0}
+        totalCount={data?.total_count || 0}
         rowsPerPage={ROWS_PER_PAGE}
         onPageChange={(newPage) => setPage(newPage)}
       />

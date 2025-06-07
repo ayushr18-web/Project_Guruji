@@ -22,4 +22,26 @@ export interface IBook {
   created_at: string; // ISO string; you can use `Date` if parsing to date object
   updated_at: string;
   published_at: string | null;
+  book_format: 'PDF' | 'TEXT';
 }
+
+
+export interface IChapter {
+  book_id: string;
+  chapter_number: number;
+  id: string;
+  title: string;
+  description?: string;
+  updated_at: string; 
+  created_at: string; 
+}
+
+
+export interface IChapterOrBookListResponse {
+  total_count: number;
+  items: IChapter[] | IBook[];
+  skip: number
+  limit: number;
+  next_page: string | null;
+  prev_page: string | null;
+} 

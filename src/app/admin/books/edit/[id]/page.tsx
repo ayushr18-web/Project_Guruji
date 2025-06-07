@@ -1,36 +1,38 @@
 "use client"
 
 import AddEditForm from "@/app/admin/components/AddEditForm";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { IBook } from "../../../../../../types/books";
+import { useParams, useRouter } from "next/navigation";
+import { useCreateBook, useEditBook, useGetBookData, useGetCategories } from "../../../../../../hooks/useBook";
+import { Loader } from "lucide-react";
 
 const EditBook = () => {
-    // get the book ID from the URL params
     const params = useParams();
     const bookId = params.id;
-    const [bookData, setBookData] = useState<IBook>({} as IBook);
+    const router = useRouter();
+    if (!bookId) {
+        return <div>Book ID not found</div>;
+    }
+    const { data: bookData, isFetching } = useGetBookData(bookId);
+    const { data: categories } = useGetCategories();
+    const updateBookMutation = useEditBook(bookId);
 
-    useEffect(() => {
-        // Fetch the book data from the API using the bookId
-        const fetchBookData = async () => {
-            try {
-                const response = await fetch(`/api/books/${bookId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch book data');
-                }
-                const data: IBook = await response.json();
-                setBookData(data);
-            } catch (error) {
-                console.error('Error fetching book data:', error);
-            }
-        };
+    const handleSubmit = (data: any) => {
+        console.log("Form submitted with data:", data);
 
-        fetchBookData();
-    }, []);
+        updateBookMutation.mutate({...data, tags: data?.tags?.split(","), category_id: data?.category_id}, {
+            onSuccess: () => {
+                router.push("/admin/books");
+            },
+            onError: (err) => {
+                console.error("Failed to create book:", err);
+            },
+        });
+    };
 
     return (
-        <AddEditForm initialData={bookData}/>
+        <>
+            {isFetching ? <Loader /> : <AddEditForm isLoading={false} onSubmit={handleSubmit} initialData={bookData} categories={categories} />}
+        </>
     )
 }
 export default EditBook;
