@@ -1,11 +1,20 @@
 'use client';
 
-import { Bell, Globe, Info, Home, ChevronDown, HelpCircle } from 'lucide-react';
+import {
+  Bell,
+  Globe,
+  Info,
+  Home,
+  ChevronDown,
+  HelpCircle,
+} from 'lucide-react';
 import Link from 'next/link';
 import ResourceMenu from '../resourceMenue';
-import { UserButton } from '@clerk/nextjs';
+import { UserButton, SignInButton, SignUpButton, useAuth } from '@clerk/nextjs';
 
 export default function Header() {
+  const { isSignedIn } = useAuth();
+
   return (
     <header className="bg-[#fdf6e9] shadow-sm px-4 md:px-10 py-2 h-16 flex items-center justify-between">
       {/* Left: Logo */}
@@ -42,7 +51,7 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Right: Language + Notifications + User */}
+      {/* Right: Language + Notifications + Auth */}
       <div className="flex items-center space-x-4">
         <button className="flex items-center gap-1 px-3 py-1 border rounded-md text-sm">
           <Globe size={16} />
@@ -56,7 +65,24 @@ export default function Header() {
           </span>
         </div>
 
-        <UserButton />
+        {/* Auth Buttons */}
+        {isSignedIn ? (
+          <UserButton afterSignOutUrl="/" />
+        ) : (
+          <div className="flex items-center space-x-2">
+            <SignInButton mode="redirect">
+              <button className="px-3 py-1.5 text-sm font-medium border border-[#703e11] text-[#703e11] rounded-md hover:bg-[#703e11] hover:text-white transition">
+                Sign In
+              </button>
+            </SignInButton>
+
+            <SignUpButton mode="redirect">
+              <button className="px-3 py-1.5 text-sm font-medium bg-[#703e11] text-white rounded-md hover:bg-[#582e0c] transition">
+                Sign Up
+              </button>
+            </SignUpButton>
+</div>
+        )}
       </div>
     </header>
   );
