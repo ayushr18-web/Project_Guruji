@@ -1,8 +1,8 @@
 'use client';
 
-import { Bell, Globe, Info, Home, Library, ChevronDown, HelpCircle } from 'lucide-react';
+import { Bell, Globe, Info, Home, ChevronDown, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
-import MegaMenu from './megaMenue';
+import ResourceMenu from '../resourceMenue';
 
 export default function Header() {
   return (
@@ -27,14 +27,9 @@ export default function Header() {
         
 
         {/* Dropdown-like items */}
-        {/* <div className="group relative px-3 py-1.5 rounded-md hover:text-white  hover:bg-[#703e11]"> */}
-            <MegaMenu/>
-          {/* <button className="flex items-center gap-1  ">
-            <Library size={16} />
-               Resource<ChevronDown size={12} />
-          </button> */}
-       
-        {/* </div> */}
+  
+            <ResourceMenu/>
+         
 
         <div className="group relative">
           <button className="flex items-center gap-1  px-3 py-1.5 hover:text-white  hover:bg-[#703e11]">

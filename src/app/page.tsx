@@ -3,9 +3,10 @@ import { ArrowRight } from 'lucide-react';
 import { FaTicketAlt } from 'react-icons/fa';
 import CustomButton from './commonComponents/customButton';
 import InfoCard from './commonComponents/infoCard';
-import { Footer } from './commonComponents/footer';
+import { Footer } from './commonComponents/sections/footer';
 import HeritageCard from './commonComponents/heritageCard';
-import Header from './commonComponents/header';
+import Header from './commonComponents/sections/header';
+import WisdomTechSection from './commonComponents/sections/wisdomSection';
 // import { Footer } from '@/components/Footer'; 
 // import Footer from './commonComponents/footer';
 // import Footer from '@/components/Footer';
@@ -125,24 +126,7 @@ export default function Home() {
       </main>
 
       {/* Section 3 */}
-      <section className="bg-[#fff1db] px-4 py-20">
-        <h1 className="text-4xl md:text-5xl font-medium text-[#642B00] text-center">
-          Ancient Wisdom. Intelligent Tech.
-        </h1>
-
-        <div className="mt-16 flex flex-wrap justify-center gap-10 max-w-7xl mx-auto">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <InfoCard
-              key={i}
-              imageSrc="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/icon-5OHlgCM1n4SlpJPUWIjeQwnUY7u7VJ.png"
-              title="Sacred Books"
-              description="Access a collection of spiritual texts and e-books"
-              buttonText="Explore Books"
-              onClick={() => alert('Explore Books clicked!')}
-            />
-          ))}
-        </div>
-      </section>
+      <WisdomTechSection/>
 
 
       {/* Section 4 */}
