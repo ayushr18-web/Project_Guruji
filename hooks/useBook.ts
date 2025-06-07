@@ -1,26 +1,33 @@
 // hooks/useBooks.ts
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { API } from '../lib/api';
-import { useBookStore } from '../store/bookStore';
 import { IBook } from '../types/books';
 
+// Fetch books list
 export const useBooks = (
-  params?: Record<string, any>
-): UseQueryResult<IBook[], Error> => {
-  const setBooks = useBookStore((state) => state.setBooks);
+  params: Record<string, any> = {}
+) => {
+  return useQuery({
+    queryKey: ['books-list', params],
+    queryFn: async (): Promise<Array<IBook>> => {
+      const response = await API.getBooks(params);
+      return response.data;
+    },
+  });
+};
 
-  return useQuery<IBook[], Error>({
-    queryKey: ['books', params],
-    queryFn: async () => {
-      const { data } = await API.getBooks(params);
-      return data as IBook[];
+// Create a book
+export const useCreateBook = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newBook: IBook): Promise<IBook> => {
+      const response = await API.createBook(newBook);
+      return response.data;
     },
-    onSuccess: (data) => {
-      setBooks(data);
+    onSuccess: () => {
+      // Invalidate and refetch the books list after creation
+      queryClient.invalidateQueries({ queryKey: ['books-list'] });
     },
-    onError: (error) => {
-      console.error('Fetching books failed:', error);
-    },
-    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 };

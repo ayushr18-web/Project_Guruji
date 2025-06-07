@@ -51,6 +51,6 @@ interface BookStoreState {
 }
 
 export const useBookStore = create<BookStoreState>((set) => ({
-  books: mockBooks,
+  books: [],
   setBooks: (books) => set({ books }),
 }));

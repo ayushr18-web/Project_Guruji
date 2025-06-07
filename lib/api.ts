@@ -1,5 +1,6 @@
 // src/api/api.ts
 import axios from 'axios';
+import { create } from 'domain';
 
 const apiClient = axios.create({
   baseURL: 'http://ec2-13-61-196-239.eu-north-1.compute.amazonaws.com/api/v1', // Replace with your actual base URL
@@ -44,6 +45,10 @@ export const API = {
   // Book APIs
   getBooks: (params?: Record<string, any>) => {
     return apiClient.get('/books', { params });
+  },
+
+  createBook: (payload: Record<string, any>) => {
+    return apiClient.post('/books', payload);
   },
 
   // Add other API calls here...
