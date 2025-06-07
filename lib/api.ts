@@ -2,9 +2,10 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://your-api-base-url.com', // Replace with your actual base URL
+  baseURL: 'http://ec2-13-61-196-239.eu-north-1.compute.amazonaws.com/api/v1', // Replace with your actual base URL
   headers: {
     'Content-Type': 'application/json',
+    'accept': 'application/json',
   },
 });
 

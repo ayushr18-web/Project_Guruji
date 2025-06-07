@@ -1,17 +1,24 @@
 'use client';
+
 import React from 'react';
 import { GenericTable, Column } from '../../../../components/Table';
 import { IBook } from '../../../../types/books';
 import { useBooks } from '../../../../hooks/useBook';
 import { useBookStore } from '../../../../store/bookStore';
 import ActionMenu from '../components/BookListMenu';
+import { useRouter } from 'next/navigation';
 
 const UserTable = () => {
 
-  const { query, rowsPerPage, page, setPage } = useBooks({ page: 1, limit: 10 });
+  const { query, rowsPerPage, page, setPage } = useBooks({ skip: 0, limit: 10 });
   const books = useBookStore((state) => state.books);
+  const router = useRouter();
   // const { isLoading, isError, error } = query;
-  console.log('Books:', books);
+
+  const handleDelete = (id: string) => {
+    // Implement delete functionality here
+    console.log(`Delete book with ID: ${id}`);
+  };
 
   const booksColumns: Column<IBook>[] = [
     { key: 'title', label: 'Title', render: (row) => <span>{row.title}</span> },
@@ -20,9 +27,10 @@ const UserTable = () => {
     { key: 'type', label: 'Type', render: (row) => <span>{row.type}</span> },
     { key: 'published', label: 'Published', render: (row) => <span>{new Date(row.published).toLocaleDateString()}</span> },
     { key: 'actions', label: 'Actions', render: (row) => (
-      <ActionMenu />
+      <ActionMenu onEdit = {() => router.push(`/admin/books/edit/${row.id}`)} onDelete={() => handleDelete(row.id)} />
     ) },  
   ];
+
 
 
 
