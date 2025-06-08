@@ -9,9 +9,9 @@ export const useBooks = (
 ) => {
   return useQuery({
     queryKey: ['books-list', params],
-    queryFn: async (): Promise<Array<IChapterOrBookListResponse>> => {
+    queryFn: async (): Promise<IChapterOrBookListResponse> => {
       const response = await API.getBooks(params);
-      return response.data;
+      return response.data as IChapterOrBookListResponse;
     },
   });
 };

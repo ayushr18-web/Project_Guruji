@@ -7,7 +7,7 @@ import { Loader } from "lucide-react";
 
 const EditBook = () => {
     const params = useParams();
-    const bookId = params.id;
+    const bookId = params.id as string;
     const router = useRouter();
     if (!bookId) {
         return <div>Book ID not found</div>;

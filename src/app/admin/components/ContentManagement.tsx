@@ -14,7 +14,7 @@ import Chapter from "./Chapter";
 import CreateChapterModal from "./CreateChapterModal";
 
 
-const ContentManagement = ({ chapters, bookId } : { chapters: IChapterOrBookListResponse[], bookId: string}) => {
+const ContentManagement = ({ chapters, bookId } : { chapters: any, bookId: string}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (

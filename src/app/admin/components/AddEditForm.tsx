@@ -90,7 +90,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
       description: initialData.description || "",
       category: initialData.category_id || "",
       book_format: initialData.book_format || "TEXT",
-      tags: initialData.tags?.join(",") || "",
+      tags: Array.isArray(initialData.tags) ? initialData.tags.join(",") : (initialData.tags || ""),
       featured: initialData.featured || false,
       ...initialData, // Spread initialData to set other fields if needed
     },

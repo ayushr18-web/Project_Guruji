@@ -9,7 +9,7 @@ const Content = () => {
 
     // get book id from params
     const params = useParams();
-    const bookId = params.id;
+    const bookId = params.id as string;
     if(!bookId) {
         return <Loader className="animate-spin" />
     }

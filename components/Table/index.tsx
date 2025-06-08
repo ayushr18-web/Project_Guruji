@@ -19,11 +19,10 @@ interface GenericTableProps<T> {
   rowsPerPage: number;
   totalCount: number;
   onPageChange: (newPage: number) => void;
-  onRowsPerPageChange: (rowsPerPage: number) => void;
+  onRowsPerPageChange?: (rowsPerPage: number) => void;
 }
 
 export const GenericTable = <T extends object>({
-
   columns,
   rows,
   page,
