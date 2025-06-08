@@ -1,9 +1,9 @@
 import React, { JSX } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, TablePagination, Typography
+  TableHead, TableRow, Paper, TablePagination
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+// import { useTheme } from '@mui/material/styles';
 
 export interface Column<T> {
   key: keyof T;
@@ -23,7 +23,7 @@ interface GenericTableProps<T> {
 }
 
 export const GenericTable = <T extends object>({
-  title,
+
   columns,
   rows,
   page,
@@ -31,7 +31,7 @@ export const GenericTable = <T extends object>({
   totalCount,
   onPageChange,
 }: GenericTableProps<T>): JSX.Element => {
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const handleChangePage = (_: unknown, newPage: number) => {
     onPageChange(newPage);
