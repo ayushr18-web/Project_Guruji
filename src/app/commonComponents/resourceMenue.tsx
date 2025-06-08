@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { BookOpen, Headphones, MapPin, Calendar, Layers3, Landmark, Map, FolderOpen, BookMarked, X, ChevronDown, Library } from 'lucide-react';
+import { BookOpen, Headphones, MapPin, Calendar, Layers3, Landmark, Map, FolderOpen, X, ChevronDown, Library } from 'lucide-react';
 
 export default function ResourceMenu() {
   const [isOpen, setIsOpen] = useState(false);
