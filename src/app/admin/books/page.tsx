@@ -52,6 +52,7 @@ const UserTable = () => {
         <ActionMenu
           onEdit={() => router.push(`/admin/books/edit/${row.id}`)}
           onDelete={() => handleDelete(row.id)}
+          onView={() => router.push(`/books/${row.id}`)}
         />
       )
     }

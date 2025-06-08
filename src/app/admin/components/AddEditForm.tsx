@@ -35,6 +35,7 @@ const formSchema = z.object({
   book_format: z.string().min(1, "book_format is required"),
   tags: z.string().optional(),
   featured: z.boolean().optional(),
+  cover_image_url: z.string().url("Cover image URL must be valid").optional(),
 });
 
 export type FormData = z.infer<typeof formSchema>;
@@ -94,6 +95,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
       book_format: initialData.book_format || "TEXT",
       tags: initialData.tags?.join(",") || "",
       featured: initialData.featured || false,
+      cover_image_url: initialData.cover_image_url || "",
       ...initialData, // Spread initialData to set other fields if needed
     },
   });
@@ -268,8 +270,9 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
               <Typography variant="h6" gutterBottom>
                 Cover Image
               </Typography>
-              <CoverImageUpload onFileSelect={(file) => {
-                console.log("Selected file:", file);
+              <CoverImageUpload  initialUrl={watch("cover_image")} onFileSelect={(fileUrl: string) => {
+                // console.log("Selected file:", file);
+                setValue("cover_image_url", fileUrl, { shouldValidate: true });
                 // You can save this to state or FormData
               }} />
             </Paper>

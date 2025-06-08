@@ -236,3 +236,24 @@ export const useUpdateSection = (
     },
   });
 }
+
+
+export const useGetTOC = (bookId: string) => {
+  return useQuery({
+    queryKey: ['toc', bookId],
+    queryFn: async (): Promise<Array<any>> => {
+      const response = await API.getTableOfContents(bookId);
+      return response.data;
+    },
+  });
+}
+
+export const useGetSection = (bookId: string, chapterId: string, sectionId: string) => {
+  return useQuery({
+    queryKey: ['section', bookId, chapterId, sectionId],
+    queryFn: async (): Promise<any> => {
+      const response = await API.getParticularSection(bookId, chapterId, sectionId);
+      return response.data;
+    },
+  });
+}

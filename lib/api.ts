@@ -1,6 +1,5 @@
 // src/api/api.ts
 import axios from 'axios';
-import { create } from 'domain';
 
 const apiClient = axios.create({
   baseURL: 'http://ec2-13-61-196-239.eu-north-1.compute.amazonaws.com/api/v1', // Replace with your actual base URL
@@ -96,6 +95,13 @@ export const API = {
 
   deleteSection: (bookId: string, chapterId: string, sectionId: string) => {
     return apiClient.delete(`/books/${bookId}/chapters/${chapterId}/sections/${sectionId}`);
+  },
+
+  getTableOfContents: (bookId: string) => {
+    return apiClient.get(`/books/${bookId}/toc`);
+  },
+  getParticularSection: (bookId: string, chapterId: string, sectionId: string) => {
+    return apiClient.get(`/books/${bookId}/chapters/${chapterId}/sections/${sectionId}`);
   },
   // Add other API calls here...
 };
