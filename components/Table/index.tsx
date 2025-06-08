@@ -4,7 +4,6 @@ import {
   TableHead, TableRow, Paper, TablePagination, Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import theme from '@/app/theme/theme';
 
 export interface Column<T> {
   key: keyof T;
@@ -31,7 +30,6 @@ export const GenericTable = <T extends object>({
   rowsPerPage,
   totalCount,
   onPageChange,
-  onRowsPerPageChange,
 }: GenericTableProps<T>): JSX.Element => {
   const theme = useTheme();
 
@@ -39,21 +37,13 @@ export const GenericTable = <T extends object>({
     onPageChange(newPage);
   };
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const newRowsPerPage = parseInt(event.target.value, 10);
-    onRowsPerPageChange(newRowsPerPage);
-    onPageChange(0);
-  };
-
   return (
-    <Paper color="card">
-      {title && (
-        <Typography variant="h6" component="div" sx={{ padding: 2 }}>
+    <Paper color="card" sx={{ backgroundColor: '#fefbf5' }}>
+      {/* {title && (
+        <Typography variant="h5" component="div" sx={{ padding: 2 }}>
           {title}
         </Typography>
-      )}
+      )} */}
       <TableContainer>
         <Table>
           <TableHead>
@@ -61,7 +51,6 @@ export const GenericTable = <T extends object>({
               {columns.map((column) => (
                 <TableCell
                   key={column.key as string}
-                  // sx={{ color: theme.palette.secondary.contrastText }}
                 >
                   {column.label}
                 </TableCell>
@@ -96,9 +85,14 @@ export const GenericTable = <T extends object>({
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[5, 10, 25, 50]}
+        onRowsPerPageChange={() => { }}
+        rowsPerPageOptions={[]}
+        labelRowsPerPage=""
+        labelDisplayedRows={() => ''}
+        showFirstButton={false}
+        showLastButton={false}
       />
+
     </Paper>
   );
 };

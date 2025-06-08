@@ -2,60 +2,79 @@
 
 import { useState } from "react";
 import {
-  Button,
+  Box,
   Paper,
   Typography,
   TextField,
   MenuItem,
   Switch,
   FormControlLabel,
-  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  FormHelperText,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { PdfUploadSection } from "./PdfUploadSection";
+import Button from "../../../../components/Button";
+import CoverImageUpload from "./CoverImageUpload";
+import { IBook } from "../../../../types/books";
 
-const categories = [
-  { value: "", label: "Select a category" },
-  { value: "fiction", label: "Fiction" },
-  { value: "nonfiction", label: "Non-fiction" },
-  { value: "science", label: "Science" },
-  // Add more categories as needed
-];
-
-const formats = [
-  { value: "text", label: "Text (Sections & Chapters)" },
-  { value: "pdf", label: "PDF Document" },
-  // Add more formats as needed
+const book_formats = [
+  { value: "TEXT", label: "Text (Sections & Chapters)" },
+  { value: "PDF", label: "PDF Document" },
 ];
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  author: z.string().min(1, "Author is required"),
+  author_name: z.string().min(1, "author_name is required"),
   description: z.string().min(1, "Description is required"),
   category: z.string().min(1, "Category is required"),
-  format: z.string().min(1, "Format is required"),
+  book_format: z.string().min(1, "book_format is required"),
   tags: z.string().optional(),
   featured: z.boolean().optional(),
-  // coverImage: z.any().optional(), // For file upload, handle separately
 });
 
 export type FormData = z.infer<typeof formSchema>;
+
 export interface AddEditFormProps {
-  open?: boolean;
-  onClose?: () => void;
-  onSubmit?: (data: FormData) => void;
-  initialData?: Partial<FormData>;
+  isLoading: boolean;
+  onSubmit?: (data: IBook) => void;
+  initialData?: Partial<IBook>;
+  categories?: any;
 }
 
+const inputStyles = {
+  color: "#4A2E23",
+  "& .MuiInputBase-input": {
+    color: "#4A2E23", // input text
+  },
+  "& .MuiInputLabel-root": {
+    color: "#4A2E23", // label text
+  },
+  "& .MuiFormHelperText-root": {
+    color: "#4A2E23", // helper/error text
+  },
+  "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#4A2E23",
+  },
+  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#4A2E23",
+  },
+  "& .MuiOutlinedInput-notchedOutline": {
+    borderColor: "#ccc",
+  },
+};
+
+
 const AddEditForm: React.FC<AddEditFormProps> = ({
-  open = true,
-  onClose = null,
   onSubmit = null,
   initialData = {},
+  isLoading = false,
+  categories
 }) => {
-  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -66,50 +85,41 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      author: "",
-      description: "",
-      category: "",
-      format: "text",
-      tags: "",
-      featured: false,
-      ...initialData,
+      title: initialData.title || "",
+      author_name: initialData.author_name || "",
+      description: initialData.description || "",
+      category: initialData.category_id || "",
+      book_format: initialData.book_format || "TEXT",
+      tags: initialData.tags?.join(",") || "",
+      featured: initialData.featured || false,
+      ...initialData, // Spread initialData to set other fields if needed
     },
   });
 
-  const onSubmitHandler = async (data: FormData) => {
-    setLoading(true);
-    try {
-      await onSubmit?.(data);
-      onClose?.();
-    } catch (error) {
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
-    <Box sx={{ p: 4,  backgroundColor: "#fdfaf6" }}>
+    <Box sx={{ p: 4, backgroundColor: "#fdfaf6" }}>
       <Typography variant="h4" gutterBottom>
-        Create New Book
+        {initialData?.id ? "Create New Book" : "Edit Book"}
       </Typography>
-      <form onSubmit={handleSubmit(onSubmitHandler)}>
+
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Box
           sx={{
             display: "flex",
             gap: 4,
-            alignItems: "flex-start",
             flexDirection: { xs: "column", md: "row" },
-            width: "100%",
-             backgroundColor: "#fdfaf6"
+            alignItems: "flex-start",
+            backgroundColor: "#fefbf5",
           }}
         >
           {/* Left Panel */}
-          <Box sx={{ flex: 2, minWidth: 0 }}>
+          <Box sx={{ flex: 2 }}>
             <Paper elevation={2} sx={{ p: 3, mb: 2 }}>
               <Typography variant="h6" gutterBottom>
-                Book Information
+                Create Book
               </Typography>
+
               <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
                 <TextField
                   {...register("title")}
@@ -118,63 +128,79 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                   margin="normal"
                   error={!!errors.title}
                   helperText={errors.title?.message}
-                  sx={{ flex: 1, minWidth: 220 }}
+                  sx={{ flex: 1, minWidth: 220, ...inputStyles }}
                 />
                 <TextField
-                  {...register("author")}
-                  label="Author *"
+                  {...register("author_name")}
+                  label="Author Name *"
                   fullWidth
                   margin="normal"
-                  error={!!errors.author}
-                  helperText={errors.author?.message}
-                  sx={{ flex: 1, minWidth: 220 }}
+                  error={!!errors.author_name}
+                  helperText={errors.author_name?.message}
+                  sx={{ flex: 1, minWidth: 220, ...inputStyles }}
                 />
               </Box>
+
               <TextField
                 {...register("description")}
                 label="Description *"
                 fullWidth
-                margin="normal"
                 multiline
                 rows={3}
+                margin="normal"
                 error={!!errors.description}
                 helperText={errors.description?.message}
+                sx={inputStyles}
               />
+
+
               <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                <TextField
-                  {...register("category")}
-                  label="Category *"
-                  select
+                <FormControl
                   fullWidth
-                  margin="normal"
                   error={!!errors.category}
-                  helperText={errors.category?.message}
-                  sx={{ flex: 1, minWidth: 220 }}
+                  sx={{ flex: 1, minWidth: 220, ...inputStyles }}
                 >
-                  {categories.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  {...register("format")}
-                  label="Content Format"
-                  select
+                  <InputLabel id="category-label">Category *</InputLabel>
+                  <Select
+                    labelId="category-label"
+                    id="category_id"
+                    {...register("category")} 
+                    label="Category *"
+                  >
+                    {categories?.map((option: any) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>{errors.category?.message}</FormHelperText>
+                </FormControl>
+
+                <FormControl
                   fullWidth
-                  margin="normal"
-                  error={!!errors.format}
-                  helperText={errors.format?.message}
-                  sx={{ flex: 1, minWidth: 220 }}
+                  error={!!errors.book_format}
+                  sx={{ flex: 1, minWidth: 220, ...inputStyles }}
                 >
-                  {formats.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                  <InputLabel id="book-format-label">Book Format *</InputLabel>
+                  <Select
+                    labelId="book-format-label"
+                    id="book_format"
+                    {...register("book_format")}
+                    label="Book Format *"
+                    defaultValue={initialData.book_format || "TEXT"}
+                  >
+                    {book_formats.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <FormHelperText>{errors.book_format?.message}</FormHelperText>
+                </FormControl>
               </Box>
-              {watch("format") === "text" && (
+
+
+              {watch("book_format") === "text" && (
                 <Box
                   sx={{
                     mt: 2,
@@ -193,10 +219,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 </Box>
               )}
 
-             {watch("format") === "pdf" && (
-                <PdfUploadSection />
-              )}
-
+              {watch("book_format") === "pdf" && <PdfUploadSection />}
 
               <TextField
                 {...register("tags")}
@@ -204,7 +227,9 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 fullWidth
                 margin="normal"
                 helperText="Enter tags separated by commas"
+                sx={inputStyles}
               />
+
               <Box sx={{ mt: 2 }}>
                 <FormControlLabel
                   control={
@@ -221,39 +246,25 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 </Typography>
               </Box>
             </Paper>
+
             <Button
+              text={"Create Book"}
               type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              disabled={loading}
-              sx={{ py: 1.5, fontWeight: 600, fontSize: 16 }}
-            >
-              {loading ? "Submitting..." : "Create Book"}
-            </Button>
+              variant="primary"
+              className="w-full text-center"
+            />
           </Box>
+
           {/* Right Panel */}
           <Box sx={{ flex: 1, minWidth: 280 }}>
             <Paper elevation={2} sx={{ p: 3 }}>
               <Typography variant="h6" gutterBottom>
                 Cover Image
               </Typography>
-              <Box
-                sx={{
-                  border: "2px dashed #ccc",
-                  borderRadius: 2,
-                  p: 4,
-                  textAlign: "center",
-                  color: "#888",
-                  cursor: "pointer",
-                }}
-              >
-                <Box sx={{ fontSize: 40, mb: 1 }}>⬆️</Box>
-                <Typography>Click to upload cover image</Typography>
-                <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                  JPEG, PNG, WebP, GIF up to 10MB • Auto-optimized
-                </Typography>
-              </Box>
+              <CoverImageUpload onFileSelect={(file) => {
+                console.log("Selected file:", file);
+                // You can save this to state or FormData
+              }} />
             </Paper>
           </Box>
         </Box>
