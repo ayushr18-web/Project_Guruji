@@ -1,41 +1,73 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { GenericTable, Column } from '../../../../components/Table';
-import { IBook } from '../../../../types/books';
 import { useBooks } from '../../../../hooks/useBook';
 import { useBookStore } from '../../../../store/bookStore';
 import ActionMenu from '../components/BookListMenu';
+import { useRouter } from 'next/navigation';
+import { BookOpen } from 'lucide-react';
+const ROWS_PER_PAGE = 10;
 
 const UserTable = () => {
+  const [page, setPage] = useState(0);
 
-  const { query, rowsPerPage, page, setPage } = useBooks({ page: 1, limit: 10 });
+  const { data, isFetching } = useBooks({ skip: page * ROWS_PER_PAGE, limit: ROWS_PER_PAGE });
+
   const books = useBookStore((state) => state.books);
-  // const { isLoading, isError, error } = query;
-  console.log('Books:', books);
+  const setBooks = useBookStore((state) => state.setBooks);
+  const router = useRouter();
 
-  const booksColumns: Column<IBook>[] = [
+  useEffect(() => {
+    if (!isFetching && data) {
+      setBooks(data); 
+    }
+  }, [data]);
+
+  const handleDelete = (id: string) => {
+    console.log(`Delete book with ID: ${id}`);
+  };
+
+  const booksColumns: Column<any>[] = [
     { key: 'title', label: 'Title', render: (row) => <span>{row.title}</span> },
-    { key: 'author', label: 'Author', render: (row) => <span>{row.author}</span> },
-    { key: 'category', label: 'Category', render: (row) => <div className='p-4 border-radius-2'>{row.category}</div> },
-    { key: 'type', label: 'Type', render: (row) => <span>{row.type}</span> },
-    { key: 'published', label: 'Published', render: (row) => <span>{new Date(row.published).toLocaleDateString()}</span> },
-    { key: 'actions', label: 'Actions', render: (row) => (
-      <ActionMenu />
-    ) },  
+    { key: 'author_name', label: 'Author', render: (row) => <span>{row.author_name}</span> },
+    { key: 'tags', label: 'Tags', render: (row) => <div className='p-4 border-radius-2'>{row?.tags?.join(',')}</div> },
+    { key: 'type', label: 'Type', render: (row) => <span>{row.book_format}</span> },
+    { key: 'status', label: 'Published', render: (row) => <span>{row.status}</span> },
+    {
+      key: 'actions',
+      label: 'Actions',
+      render: (row) => (
+        <ActionMenu
+          onEdit={() => router.push(`/admin/books/edit/${row.id}`)}
+          onDelete={() => handleDelete(row.id)}
+        />
+      )
+    }
   ];
 
-
-
   return (
-    <GenericTable<IBook>
-      title="All E-Books"
-      columns={booksColumns}
-      rows={books}
-      page={page}
-      totalCount={0}
-      rowsPerPage={rowsPerPage}
-      onPageChange={setPage}
-    />
+    <div>
+      <div className="flex items-center justify-between px-6 py-4 bg-[#fdf8ea] rounded-md">
+      <h1 className="text-2xl font-bold text-black">Books Management</h1>
+
+      <div className="flex gap-3">
+        <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-black bg-[#f9f5e9] border-[#eae4d4] hover:bg-[#f0ebda] transition" onClick={() => router.push(`/admin/books/new`)}>
+          <BookOpen className="w-4 h-4"/>
+          Add E-Book
+        </button>
+      </div>
+    </div>
+      <GenericTable<any>
+        title="All E-Books"
+        columns={booksColumns}
+        rows={books.items || []}
+        page={page}
+        totalCount={data?.total_count || 0}
+        rowsPerPage={ROWS_PER_PAGE}
+        onPageChange={(newPage) => setPage(newPage)}
+      />
+    </div>
   );
 };
 

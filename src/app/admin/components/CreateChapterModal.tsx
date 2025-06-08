@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import {
   Dialog,
@@ -13,12 +11,14 @@ import {
   Box
 } from '@mui/material';
 import { X } from 'lucide-react';
-import { RichTextEditor } from '../../../../components/RichTextEditor';
+import { useCreateChaper } from '../../../../hooks/useBook';
 
 interface CreateChapterModalProps {
   open: boolean;
   onClose: () => void;
-  onCreate?: (title: string, description: string) => void;
+  bookId: string;
+  data?: any; // Adjust type as needed
+  chapterId?: string;
 }
 
 const inputStyles = {
@@ -43,17 +43,34 @@ const inputStyles = {
   },
 };
 
-const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, onCreate }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ data, open, onClose, bookId, chapterId }) => {
+  const [title, setTitle] = useState(data?.title || '');
+  const [description, setDescription] = useState(data?.description || '');
 
+  const createChapterMutation = useCreateChaper(bookId, chapterId);
 
   const handleCreate = () => {
     if (!title.trim()) {
       alert('Section title is required');
       return;
     }
-    onCreate?.(title, content);
+
+    console.log('Creating chapter with title:',bookId,  title, 'and description:', description);
+
+    // Call the mutation to create chapter
+    createChapterMutation.mutate( { title, description}, {
+    onSuccess: (data) => {
+      // onCreate?.(data.title, data.description ?? '');
+      console.log('Chapter created successfully:', data);
+      setTitle('');
+      setDescription('');
+      onClose();
+    },
+    onError: (error) => {
+      console.error('Create chapter failed:', error);
+      alert('Failed to create chapter. Please try again.');
+    },
+  });
   };
 
   return (
@@ -84,7 +101,17 @@ const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, 
           <Typography variant="body2" color="textSecondary">
             Sections help organize your book into logical parts.
           </Typography>
-            <RichTextEditor initialValue={content} onChange={setContent}/>
+
+          <TextField
+            fullWidth
+            multiline
+            minRows={3}
+            label="Description (Optional)"
+            placeholder="Enter a brief description for this section"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            sx={{  ...inputStyles }}
+          />
         </Box>
       </DialogContent>
 
@@ -101,4 +128,4 @@ const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, 
   );
 };
 
-export default CreateSectionModal;
+export default CreateChapterModal;
