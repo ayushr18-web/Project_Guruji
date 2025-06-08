@@ -74,12 +74,28 @@ export const API = {
     return apiClient.post(`/books/${bookId}/chapters/${chapterId}/sections`, payload);
   },
 
+  updateSection: (bookId: string, chapterId: string, sectionId: string, payload: Record<string, any>) => {
+    return apiClient.put(`/books/${bookId}/chapters/${chapterId}/sections/${sectionId}`, payload);
+  },
+
   getSections: (bookId: string,  chapterId: string) => {
     return apiClient.get(`/books/${bookId}/chapters/${chapterId}/sections`);
   },
 
   getCategories: () => {
     return apiClient.get('/categories?type=BOOK&skip=0&limit=25&is_active=true');
+  },
+
+  deleteChapter: (bookId: string, chapterId: string) => {
+    return apiClient.delete(`/books/${bookId}/chapters/${chapterId}`);
+  },
+
+  deleteBook: (bookId: string) => {
+    return apiClient.delete(`/books/${bookId}`);
+  },
+
+  deleteSection: (bookId: string, chapterId: string, sectionId: string) => {
+    return apiClient.delete(`/books/${bookId}/chapters/${chapterId}/sections/${sectionId}`);
   },
   // Add other API calls here...
 };

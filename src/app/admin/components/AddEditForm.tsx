@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Box,
   Paper,
@@ -21,6 +20,7 @@ import { PdfUploadSection } from "./PdfUploadSection";
 import Button from "../../../../components/Button";
 import CoverImageUpload from "./CoverImageUpload";
 import { IBook } from "../../../../types/books";
+import { useRouter } from "next/navigation";
 
 const book_formats = [
   { value: "TEXT", label: "Text (Sections & Chapters)" },
@@ -75,6 +75,8 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
   isLoading = false,
   categories
 }) => {
+  const router = useRouter();
+
 
   const {
     register,
@@ -99,10 +101,12 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
 
   return (
     <Box sx={{ p: 4, backgroundColor: "#fdfaf6" }}>
-      <Typography variant="h4" gutterBottom>
-        {initialData?.id ? "Create New Book" : "Edit Book"}
-      </Typography>
-
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h5" gutterBottom>
+          {initialData?.id ? "Edit Book" : "Create New Book"}
+        </Typography>
+        {initialData.id && <Button variant="primary" onClick={() => router.push(`/admin/books/${initialData.id}/content`)} text="Manage Content"/>}
+      </Box>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Box
           sx={{
@@ -164,8 +168,9 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                   <Select
                     labelId="category-label"
                     id="category_id"
-                    {...register("category")} 
+                    {...register("category")}
                     label="Category *"
+                    defaultValue={initialData.category_id || ""}
                   >
                     {categories?.map((option: any) => (
                       <MenuItem key={option.id} value={option.id}>
@@ -188,6 +193,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                     {...register("book_format")}
                     label="Book Format *"
                     defaultValue={initialData.book_format || "TEXT"}
+                    disabled={!!initialData.id} // Disable if editing an existing book
                   >
                     {book_formats.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -200,7 +206,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
               </Box>
 
 
-              {watch("book_format") === "text" && (
+              {watch("book_format") === "TEXT" && (
                 <Box
                   sx={{
                     mt: 2,
@@ -219,7 +225,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 </Box>
               )}
 
-              {watch("book_format") === "pdf" && <PdfUploadSection />}
+              {watch("book_format") === "PDF" && <PdfUploadSection />}
 
               <TextField
                 {...register("tags")}
@@ -228,6 +234,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 margin="normal"
                 helperText="Enter tags separated by commas"
                 sx={inputStyles}
+
               />
 
               <Box sx={{ mt: 2 }}>
@@ -251,7 +258,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
               text={"Create Book"}
               type="submit"
               variant="primary"
-              className="w-full text-center"
+              className="w-full flex justify-center"
             />
           </Box>
 

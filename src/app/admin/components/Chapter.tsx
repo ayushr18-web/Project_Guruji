@@ -13,17 +13,19 @@ import { IChapter } from "../../../../types/books";
 import { ArrowDown, Edit, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import CreateSectionModal from "./CreateSectionModal";
-import { useCreateSection, useSections } from "../../../../hooks/useBook";
+import { useDeleteChapter, useDeleteSection, useSections } from "../../../../hooks/useBook";
 import CreateChapterModal from "./CreateChapterModal";
 
 const Chapter = ({ chapter, bookId }: { chapter: IChapter, bookId: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [expanded, setExpanded] = useState(false);
+    const [selectedSection, setSelectedSection] = useState<any | null>(null);
 
-    const createSectionMutation = useCreateSection(bookId, chapter.id);
 
-    // Lazy load: only fetch sections when expanded
+    const deleteChapterMutation = useDeleteChapter();
+    const deleteSectionMutation = useDeleteSection();
+
     const { data: sections, isLoading, refetch } = useSections(bookId, chapter.id);
 
     const handleAccordionChange = (_: any, isExpanded: boolean) => {
@@ -33,19 +35,36 @@ const Chapter = ({ chapter, bookId }: { chapter: IChapter, bookId: string }) => 
         }
     };
 
-    const handleCreateAndUpdateSection = (title: string, content: string) => {
-        createSectionMutation.mutate({ title, body: content }, {
-            onSuccess: (data) => {
-                console.log('Section created successfully:', data);
-                refetch(); // refresh list after creation
-            },
-            onError: (error) => {
-                console.error('Create section failed:', error);
-                alert('Failed to create section. Please try again.');
-            },
-        });
-        setIsModalOpen(false);
+
+
+    const handleDeleteChapter = () => {
+        deleteChapterMutation.mutate(
+            { bookId, chapterId: chapter.id },
+            {
+                onSuccess: () => {
+                    console.log('Chapter deleted successfully');
+                },
+                onError: (error) => {
+                    console.error('Failed to delete chapter:', error);
+                },
+            }
+        );
     };
+
+    const handleDeleteSection = (sectionId: string) => {
+        deleteSectionMutation.mutate(
+            { bookId, chapterId: chapter.id, sectionId },
+            {
+                onSuccess: () => {
+                    refetch();
+                },
+                onError: (error) => {
+                    console.error('Failed to delete chapter:', error);
+                },
+            }
+        );
+    };
+
 
     return (
         <Accordion
@@ -80,9 +99,6 @@ const Chapter = ({ chapter, bookId }: { chapter: IChapter, bookId: string }) => 
                 >
                     {`${chapter.chapter_number}. ${chapter.title.toUpperCase()} ( Chapters)`}
                 </Typography>
-            </AccordionSummary>
-
-            <AccordionDetails sx={{ background: "#fefdf8", borderRadius: 2, px: 3, py: 2 }}>
                 <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
                     <Button
                         variant="outlined"
@@ -95,36 +111,54 @@ const Chapter = ({ chapter, bookId }: { chapter: IChapter, bookId: string }) => 
                             "&:hover": { background: "#f9f1e1", borderColor: "#d4b896" },
                         }}
                         size="small"
-                        onClick={() => setIsModalOpen(true)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setIsModalOpen(true)
+                        }}
                     >
                         Add Section
                     </Button>
-                    <IconButton aria-label="Edit Section" sx={{ color: "#6b4423" }} onClick={() => setIsEditModalOpen(true)}>
+                    <IconButton aria-label="Edit Section" sx={{ color: "#6b4423" }} onClick={(e) => {
+                        e.stopPropagation();
+                        setIsEditModalOpen(true)
+                    }}>
                         <Edit size={18} />
                     </IconButton>
-                    <IconButton aria-label="Delete Section" sx={{ color: "#b8956f" }}>
+                    <IconButton aria-label="Delete Section" sx={{ color: "#b8956f" }} onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteChapter();
+                    }}>
                         <Trash2 size={18} />
                     </IconButton>
                 </Box>
 
-                {isModalOpen && (
-                    <CreateSectionModal
-                        open={isModalOpen}
-                        onClose={() => setIsModalOpen(false)}
-                        onCreate={handleCreateAndUpdateSection}
-                    />
-                )}
+            </AccordionSummary>
 
-                {isEditModalOpen && (
-                    <CreateChapterModal
-                        open={isEditModalOpen}
-                        data={{ title: chapter.title, description: chapter.description }}
-                        bookId={bookId}
-                        onClose={() => setIsEditModalOpen(false)}
-                        chapterId={chapter.id}
-                    />
-                )}
+            {isModalOpen && (
+                <CreateSectionModal
+                    open={isModalOpen}
+                    onClose={() => {
+                        setIsModalOpen(false);
+                        setSelectedSection(null);
+                         refetch();
+                    }}
+                    chapterId={chapter.id}
+                    selectedSection={selectedSection}
+                    bookId={bookId}
+                />
+            )}
 
+            {isEditModalOpen && (
+                <CreateChapterModal
+                    open={isEditModalOpen}
+                    data={{ title: chapter.title, description: chapter.description }}
+                    bookId={bookId}
+                    onClose={() => setIsEditModalOpen(false)}
+                    chapterId={chapter.id}
+                />
+            )}
+
+            <AccordionDetails sx={{ background: "#fefdf8", borderRadius: 2, px: 3, py: 2 }}>
                 {isLoading ? (
                     <Typography>Loading sections...</Typography>
                 ) : (
@@ -153,10 +187,13 @@ const Chapter = ({ chapter, bookId }: { chapter: IChapter, bookId: string }) => 
                             {/* Right: Action Icons */}
                             <Box sx={{ display: "flex", gap: 1 }}>
                                 <IconButton aria-label="Edit">
-                                    <Edit fontSize="small" />
+                                    <Edit fontSize="small" onClick={() => {
+                                        setSelectedSection(section);
+                                        setIsModalOpen(true);
+                                    }} />
                                 </IconButton>
                                 <IconButton aria-label="Delete">
-                                    <Trash2 fontSize="small" />
+                                    <Trash2 fontSize="small" onClick={() => handleDeleteSection(section.id)} />
                                 </IconButton>
                             </Box>
                         </Box>
