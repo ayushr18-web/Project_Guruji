@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Loader } from "lucide-react";
-import { useBooks } from "../../../hooks/useBook";
+import { useBooks, useGetCategories } from "../../../hooks/useBook";
 import { ROWS_PER_PAGE } from "../../../constants/book";
 import BookCard from "./components/BookCard";
 
@@ -14,6 +14,8 @@ const BooksPage = () => {
         skip: 0,
         limit: ROWS_PER_PAGE
     });
+
+    const { data: categories } = useGetCategories();
 
     return (
         <div className="container mx-auto p-4">

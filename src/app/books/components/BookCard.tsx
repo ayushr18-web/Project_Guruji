@@ -10,7 +10,7 @@ const BookCard = ({ book }: { book: IBook }) => {
     >
       {/* Top-right badge */}
       <div className="absolute top-2 right-2 bg-[#f4efe8] text-xs text-gray-800 px-2 py-1 rounded-full font-medium">
-        Text
+        {book.book_format}
       </div>
 
       {/* Cover Image */}
