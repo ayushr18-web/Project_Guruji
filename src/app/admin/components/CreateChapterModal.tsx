@@ -51,7 +51,7 @@ const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ data, open, onC
 
   const handleCreate = () => {
     if (!title.trim()) {
-      alert('Section title is required');
+      alert('Chapter title is required');
       return;
     }
 
@@ -76,7 +76,7 @@ const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ data, open, onC
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
-        Create New Section
+        Create New Chapter
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -91,15 +91,15 @@ const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ data, open, onC
           <TextField
             fullWidth
             required
-            label="Section Title"
-            placeholder="Enter section title"
+            label="chapter Title"
+            placeholder="Enter chapter title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             autoFocus
             sx={{  ...inputStyles }}
           />
           <Typography variant="body2" color="textSecondary">
-            Sections help organize your book into logical parts.
+            Chapters help organize your book into logical parts.
           </Typography>
 
           <TextField
@@ -107,7 +107,7 @@ const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ data, open, onC
             multiline
             minRows={3}
             label="Description (Optional)"
-            placeholder="Enter a brief description for this section"
+            placeholder="Enter a brief description for this chapter"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             sx={{  ...inputStyles }}
@@ -121,7 +121,7 @@ const CreateChapterModal: React.FC<CreateChapterModalProps> = ({ data, open, onC
           onClick={handleCreate}
           sx={{ backgroundColor: '#4B2E2E', '&:hover': { backgroundColor: '#3b2525' } }}
         >
-          Create Section
+          Create Chapter
         </Button>
       </DialogActions>
     </Dialog>

@@ -2,12 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { GenericTable, Column } from '../../../../components/Table';
-import { useBooks } from '../../../../hooks/useBook';
+import { useBooks, useDeleteBook } from '../../../../hooks/useBook';
 import { useBookStore } from '../../../../store/bookStore';
 import ActionMenu from '../components/BookListMenu';
 import { useRouter } from 'next/navigation';
 import { BookOpen } from 'lucide-react';
-const ROWS_PER_PAGE = 10;
+import { ROWS_PER_PAGE } from '../../../../constants/book';
+
 
 const UserTable = () => {
   const [page, setPage] = useState(0);
@@ -24,9 +25,20 @@ const UserTable = () => {
     }
   }, [data]);
 
+
+  const deleteBookMutation = useDeleteBook();
+
   const handleDelete = (id: string) => {
-    console.log(`Delete book with ID: ${id}`);
+    deleteBookMutation.mutate(id, {
+      onSuccess: () => {
+        console.log("Book deleted successfully");
+      },
+      onError: (error) => {
+        console.error("Failed to delete book:", error);
+      },
+    });
   };
+
 
   const booksColumns: Column<any>[] = [
     { key: 'title', label: 'Title', render: (row) => <span>{row.title}</span> },
@@ -41,6 +53,7 @@ const UserTable = () => {
         <ActionMenu
           onEdit={() => router.push(`/admin/books/edit/${row.id}`)}
           onDelete={() => handleDelete(row.id)}
+          onView={() => router.push(`/books/${row.id}`)}
         />
       )
     }
@@ -58,7 +71,7 @@ const UserTable = () => {
         </button>
       </div>
     </div>
-      <GenericTable<any>
+      { deleteBookMutation.isPending ? <>Deleting....</> : <GenericTable<any>
         title="All E-Books"
         columns={booksColumns}
         rows={books.items || []}
@@ -66,7 +79,7 @@ const UserTable = () => {
         totalCount={data?.total_count || 0}
         rowsPerPage={ROWS_PER_PAGE}
         onPageChange={(newPage) => setPage(newPage)}
-      />
+      />}
     </div>
   );
 };

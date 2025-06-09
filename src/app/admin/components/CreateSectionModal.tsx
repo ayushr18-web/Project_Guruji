@@ -14,11 +14,15 @@ import {
 } from '@mui/material';
 import { X } from 'lucide-react';
 import { RichTextEditor } from '../../../../components/RichTextEditor';
+import { useCreateSection, useUpdateSection } from '../../../../hooks/useBook';
+import { set } from 'react-hook-form';
 
 interface CreateChapterModalProps {
   open: boolean;
   onClose: () => void;
-  onCreate?: (title: string, description: string) => void;
+  selectedSection?: any;
+  chapterId: string;
+  bookId: string;
 }
 
 const inputStyles = {
@@ -43,9 +47,41 @@ const inputStyles = {
   },
 };
 
-const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, onCreate }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, bookId,  selectedSection, chapterId }) => {
+  const [title, setTitle] = useState(selectedSection?.title || '');
+  const [content, setContent] = useState(selectedSection?.body || '');
+
+  const updateSectionMutation = useUpdateSection(bookId, chapterId, selectedSection?.id);
+  const createSectionMutation = useCreateSection(bookId, chapterId);
+
+  const handleCreateAndUpdateSection = () => {
+        if (selectedSection?.id) {
+            updateSectionMutation.mutate(
+                { title, body: content },
+                {
+                    onSuccess: (data) => {
+                        refetch(); // refresh list after update
+                    },
+                    onError: (error) => {
+                        alert('Failed to update section. Please try again.');
+                    }
+                }
+            );
+        }
+        else {
+            createSectionMutation.mutate({ title, body: content }, {
+                onSuccess: (data) => {
+                    refetch(); // refresh list after creation
+                },
+                onError: (error) => {
+                    alert('Failed to create section. Please try again.');
+                },
+            });
+        }
+        onClose();
+        setTitle('');
+        setContent('');
+    };
 
 
   const handleCreate = () => {
@@ -53,7 +89,7 @@ const CreateSectionModal: React.FC<CreateChapterModalProps> = ({ open, onClose, 
       alert('Section title is required');
       return;
     }
-    onCreate?.(title, content);
+    handleCreateAndUpdateSection();
   };
 
   return (

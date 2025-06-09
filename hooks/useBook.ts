@@ -159,3 +159,101 @@ export const useSections = (bookId: string, chapterId: string) => {
   });
 };
 
+export const useDeleteBook = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (bookId: string): Promise<void> => {
+      await API.deleteBook(bookId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['books-list'] });
+    },
+  });
+};
+
+export const useDeleteChapter = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ bookId, chapterId }: { bookId: string; chapterId: string }): Promise<void> => {
+      await API.deleteChapter(bookId, chapterId);
+    },
+    onSuccess: (_, variables) => {
+      // Invalidate the chapters list for that book
+      queryClient.invalidateQueries({ queryKey: ['chapters', variables.bookId] });
+    },
+  });
+};
+
+
+export const useDeleteSection = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ bookId, chapterId, sectionId }: { bookId: string; chapterId: string, sectionId: string }): Promise<void> => {
+      await API.deleteSection(bookId, chapterId, sectionId);
+    },
+    onSuccess: (_, variables) => {
+      // Invalidate the chapters list for that book
+      queryClient.invalidateQueries({ queryKey: ['chapters', variables.sectionId] });
+    },
+  });
+};
+
+
+export const useUpdateSection = (
+  bookId: string,
+  chapterId: string,
+  sectionId?: string,
+  options?: {
+    onSuccess?: (data: any) => void;
+    onError?: (error: unknown) => void;
+  }
+) => { 
+  const queryClient = useQueryClient();
+
+  return useMutation<any, unknown, any>({
+    mutationFn: async (updatedSection) => {
+      try {
+        let response;
+        if(sectionId) {
+          response = await API.updateSection(bookId, chapterId, sectionId, updatedSection);
+        }else{
+          throw new Error("Section ID is required for update");
+        }
+        return response.data as any;
+      } catch (error) {
+        throw error; // rethrow to let react-query handle error state
+      }
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['sections', bookId, chapterId] });
+      if (options?.onSuccess) options.onSuccess(data);
+    },
+    onError: (error) => {
+      if (options?.onError) options.onError(error);
+    },
+  });
+}
+
+
+export const useGetTOC = (bookId: string) => {
+  return useQuery({
+    queryKey: ['toc', bookId],
+    queryFn: async (): Promise<Array<any>> => {
+      const response = await API.getTableOfContents(bookId);
+      return response.data;
+    },
+  });
+}
+
+export const useGetSection = (bookId: string, chapterId: string, sectionId: string) => {
+  return useQuery({
+    queryKey: ['section', bookId, chapterId, sectionId],
+    queryFn: async (): Promise<any> => {
+      const response = await API.getParticularSection(bookId, chapterId, sectionId);
+      return response.data;
+    },
+  });
+}
