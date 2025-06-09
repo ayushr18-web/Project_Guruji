@@ -12,4 +12,10 @@ typescript: {
   // other config options here
 };
 
+module.exports = {
+  experimental: {
+    serverActions: true, // if using server actions
+  },
+};
+
 export default nextConfig;
