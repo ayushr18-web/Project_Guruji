@@ -3,16 +3,17 @@
 import AddEditForm from "../../components/AddEditForm";
 import { useCreateBook, useGetCategories } from "../../../../../hooks/useBook";
 import { useRouter } from "next/navigation";
+import { Loader } from "lucide-react";
 
 const New = () => {
     const router = useRouter();
-    const { mutate: createBook, isPending, isSuccess, isError, error } = useCreateBook();
+    const { mutate: createBook, isPending } = useCreateBook();
 
     const { data: categories } = useGetCategories();
 
     const handleSubmit = (data: any) => {
 
-        createBook({...data, tags: data?.tags?.split(","), category_id: data?.category_id}, {
+        createBook({...data, tags: data?.tags?.split(","), category_id: data?.category}, {
             onSuccess: () => {
                 router.push("/admin/books");
             },
@@ -23,7 +24,9 @@ const New = () => {
     };
 
     return (
-        <AddEditForm onSubmit={handleSubmit} isLoading={isPending} categories={categories}/>
+       <>
+       { isPending ? <Loader /> :  <AddEditForm onSubmit={handleSubmit} isLoading={isPending} categories={categories}/> }
+       </>
     );
 };
 

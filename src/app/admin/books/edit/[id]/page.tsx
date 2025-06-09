@@ -2,12 +2,12 @@
 
 import AddEditForm from "@/app/admin/components/AddEditForm";
 import { useParams, useRouter } from "next/navigation";
-import { useCreateBook, useEditBook, useGetBookData, useGetCategories } from "../../../../../../hooks/useBook";
+import { useEditBook, useGetBookData, useGetCategories } from "../../../../../../hooks/useBook";
 import { Loader } from "lucide-react";
 
 const EditBook = () => {
     const params = useParams();
-    const bookId = params.id;
+    const bookId = params.id as string;
     const router = useRouter();
     if (!bookId) {
         return <div>Book ID not found</div>;
@@ -17,9 +17,8 @@ const EditBook = () => {
     const updateBookMutation = useEditBook(bookId);
 
     const handleSubmit = (data: any) => {
-        console.log("Form submitted with data:", data);
 
-        updateBookMutation.mutate({...data, tags: data?.tags?.split(","), category_id: data?.category_id}, {
+        updateBookMutation.mutate({...data, tags: data?.tags?.split(","), category_id: data?.category}, {
             onSuccess: () => {
                 router.push("/admin/books");
             },
@@ -31,7 +30,7 @@ const EditBook = () => {
 
     return (
         <>
-            {isFetching ? <Loader /> : <AddEditForm isLoading={false} onSubmit={handleSubmit} initialData={bookData} categories={categories} />}
+            {(isFetching || updateBookMutation.isPending) ? <Loader /> : <AddEditForm isLoading={false} onSubmit={handleSubmit} initialData={bookData} categories={categories} />}
         </>
     )
 }

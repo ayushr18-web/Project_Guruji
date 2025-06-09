@@ -7,7 +7,8 @@ import { useBookStore } from '../../../../store/bookStore';
 import ActionMenu from '../components/BookListMenu';
 import { useRouter } from 'next/navigation';
 import { BookOpen } from 'lucide-react';
-const ROWS_PER_PAGE = 10;
+import { ROWS_PER_PAGE } from '../../../../constants/book';
+
 
 const UserTable = () => {
   const [page, setPage] = useState(0);

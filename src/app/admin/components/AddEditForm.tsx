@@ -35,7 +35,7 @@ const formSchema = z.object({
   book_format: z.string().min(1, "book_format is required"),
   tags: z.string().optional(),
   featured: z.boolean().optional(),
-  cover_image_url: z.string().url("Cover image URL must be valid").optional(),
+  // cover_image_url: z.string().url("Cover image URL must be valid").optional(),
 });
 
 export type FormData = z.infer<typeof formSchema>;
@@ -173,6 +173,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                     {...register("category")}
                     label="Category *"
                     defaultValue={initialData.category_id || ""}
+                    onChange={(e) => setValue("category", e.target.value, { shouldValidate: true })}
                   >
                     {categories?.map((option: any) => (
                       <MenuItem key={option.id} value={option.id}>
@@ -271,9 +272,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                 Cover Image
               </Typography>
               <CoverImageUpload  initialUrl={watch("cover_image")} onFileSelect={(fileUrl: string) => {
-                // console.log("Selected file:", file);
                 setValue("cover_image_url", fileUrl, { shouldValidate: true });
-                // You can save this to state or FormData
               }} />
             </Paper>
           </Box>

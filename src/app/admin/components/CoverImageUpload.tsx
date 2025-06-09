@@ -9,7 +9,6 @@ interface CoverImageUploadProps {
 const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initialUrl = "" }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(initialUrl);
-  console.log("initialUrl", initialUrl);
 
   useEffect(() => {
     // Sync external changes to initialUrl
@@ -22,20 +21,56 @@ const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initi
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+ const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
+    if (!file) return;
 
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        setPreviewUrl(result); // Show preview
-        onFileSelect(result); // Pass data URL or replace with actual upload logic
-      };
+    console.log("Selected file:", file);
 
-      reader.readAsDataURL(file); // For preview (optional if using upload logic)
+    try {
+      const uploadedUrl = await uploadFile(file);
+      console.log("File uploaded to S3:", uploadedUrl);
+      // Optional: Save the URL to your backend DB if needed here
+    } catch (error) {
+      console.error("Error uploading file:", error);
     }
   };
+
+  async function uploadFile(file: File) {
+    // 1️⃣ Request presigned URL
+    const response = await fetch('http://ec2-13-61-196-239.eu-north-1.compute.amazonaws.com/api/v1/s3_upload/generate-presigned-url', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        filename: file.name,
+        content_type: file.type,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate presigned URL');
+    }
+
+    const data = await response.json();
+    const uploadUrl = data.upload_url;
+
+    // 2️⃣ Upload file to S3
+    const uploadResponse = await fetch(uploadUrl, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': file.type,
+      },
+      body: file,
+    });
+
+    if (!uploadResponse.ok) {
+      throw new Error('Failed to upload file to S3');
+    }
+
+    // 3️⃣ Return the final S3 URL
+    const s3FileUrl = uploadUrl.split('?')[0];
+    return s3FileUrl;
+  }
 
   return (
     <>
