@@ -1,7 +1,7 @@
 import React, { JSX } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, TablePagination, Typography
+  TableHead, TableRow, Paper, TablePagination
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
@@ -12,7 +12,6 @@ export interface Column<T> {
 }
 
 interface GenericTableProps<T> {
-  title?: string;
   columns: Column<T>[];
   rows: T[];
   page: number;
@@ -23,7 +22,6 @@ interface GenericTableProps<T> {
 }
 
 export const GenericTable = <T extends object>({
-  title,
   columns,
   rows,
   page,
@@ -39,11 +37,6 @@ export const GenericTable = <T extends object>({
 
   return (
     <Paper color="card" sx={{ backgroundColor: '#fefbf5' }}>
-      {/* {title && (
-        <Typography variant="h5" component="div" sx={{ padding: 2 }}>
-          {title}
-        </Typography>
-      )} */}
       <TableContainer>
         <Table>
           <TableHead>
@@ -51,6 +44,7 @@ export const GenericTable = <T extends object>({
               {columns.map((column) => (
                 <TableCell
                   key={column.key as string}
+                  className="font-bold text-[#4A2E23] text-md"
                 >
                   {column.label}
                 </TableCell>
