@@ -45,3 +45,17 @@ export interface IChapterOrBookListResponse {
   next_page: string | null;
   prev_page: string | null;
 } 
+
+export interface ICategory {
+  id: string;
+  name: string;
+  description: string | null;
+  icon_url: string | null;
+  color_code: string | null;
+  parent_id: string | null;
+  type: 'BOOK' | string; // Add other types if needed
+  is_active: boolean;
+  is_featured: boolean;
+  created_at: string; // ISO timestamp, consider using Date if parsed
+  updated_at: string; // same here
+}

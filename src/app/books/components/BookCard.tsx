@@ -1,6 +1,6 @@
-import { IBook } from "../../../../types/books";
+import { IBook, ICategory } from "../../../../types/books";
 
-const BookCard = ({ book }: { book: IBook }) => {
+const BookCard = ({ book, category }: { book: IBook,category: ICategory  | {}}) => {
   return (
     <div
       className="w-64 bg-[#fcf9f3] rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 relative cursor-pointer"
@@ -29,7 +29,7 @@ const BookCard = ({ book }: { book: IBook }) => {
 
         {/* Category pill */}
         <span className="inline-block bg-[#f4efe8] text-xs text-black px-3 py-1 rounded-full font-medium">
-          {book.category_id}
+          {category?.name}
         </span>
       </div>
     </div>

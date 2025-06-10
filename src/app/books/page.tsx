@@ -5,6 +5,7 @@ import { Loader } from "lucide-react";
 import { useBooks, useGetCategories } from "../../../hooks/useBook";
 import { ROWS_PER_PAGE } from "../../../constants/book";
 import BookCard from "./components/BookCard";
+import { IBook } from "../../../types/books";
 
 const BooksPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -55,8 +56,10 @@ const BooksPage = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {books?.items?.map((book) => (
-            <BookCard key={book.id} book={book} />
+          {books?.items?.map((book: IBook) => (
+            <>
+             <BookCard key={book.id} book={book} category={categories?.filter((cat) => cat.id === book.category_id)?.[0] || {}}/>
+            </>
           ))}
         </div>
       )}
