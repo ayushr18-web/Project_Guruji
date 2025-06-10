@@ -11,7 +11,7 @@ export default function LoginLayout({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
 
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen w-full">
         {/* Background Image */}
         <div className='fixed inset-0 bg-[url("../../images/site-background-texture.jpg")] bg-cover bg-center bg-no-repeat z-[-1]' />
 

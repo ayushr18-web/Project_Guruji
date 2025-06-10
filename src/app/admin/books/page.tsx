@@ -66,7 +66,7 @@ const UserTable = () => {
       label: 'Type',
       render: (row) => (
         <span className="inline-flex items-center gap-2 px-3 py-1 text-sm text-black bg-[#F3F2EE] rounded-full">
-          <FileText className="w-1 h-1" />
+          <FileText className="w-4 h-4" />
           {row.book_format}
         </span>
       ),
