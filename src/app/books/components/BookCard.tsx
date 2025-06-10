@@ -1,11 +1,13 @@
+import { useRouter } from "next/navigation";
 import { IBook, ICategory } from "../../../../types/books";
 
 const BookCard = ({ book, category }: { book: IBook,category: ICategory  | {}}) => {
+  const router = useRouter();
   return (
     <div
       className="w-64 bg-[#fcf9f3] rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 relative cursor-pointer"
       onClick={() => {
-        console.log(`Clicked on book: ${book.title}`);
+        router.push(`/books/${book.id}`);
       }}
     >
       {/* Top-right badge */}
