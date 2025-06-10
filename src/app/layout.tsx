@@ -46,10 +46,16 @@ export default function RootLayout({
     
 // </ClerkProvider>
 
- <ClerkProvider>
-      <html lang="en">
-        <body>{children}</body>
-      </html>
-    </ClerkProvider>
+<ClerkProvider>
+  <html lang="en">
+    <body className="min-h-screen m-0">
+      <div className="flex items-center justify-center min-h-screen">
+        {children}
+      </div>
+    </body>
+  </html>
+</ClerkProvider>
+
+
   );
 }
