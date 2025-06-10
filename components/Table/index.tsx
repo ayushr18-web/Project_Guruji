@@ -12,7 +12,6 @@ export interface Column<T> {
 }
 
 interface GenericTableProps<T> {
-  title?: string;
   columns: Column<T>[];
   rows: T[];
   page: number;
@@ -38,11 +37,6 @@ export const GenericTable = <T extends object>({
 
   return (
     <Paper color="card" sx={{ backgroundColor: '#fefbf5' }}>
-      {/* {title && (
-        <Typography variant="h5" component="div" sx={{ padding: 2 }}>
-          {title}
-        </Typography>
-      )} */}
       <TableContainer>
         <Table>
           <TableHead>
@@ -50,6 +44,7 @@ export const GenericTable = <T extends object>({
               {columns.map((column) => (
                 <TableCell
                   key={column.key as string}
+                  className="font-bold text-[#4A2E23] text-md"
                 >
                   {column.label}
                 </TableCell>

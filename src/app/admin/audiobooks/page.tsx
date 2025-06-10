@@ -92,12 +92,12 @@ const UserTable = () => {
   return (
     <div>
       <div className="flex items-center justify-between px-6 py-4 bg-[#fdf8ea] rounded-md">
-        <h1 className="text-2xl font-bold text-black">Books Management</h1>
+        <h1 className="text-2xl font-bold text-black">Audiobooks Management</h1>
 
         <div className="flex gap-3">
           <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-black bg-[#f9f5e9] border-[#eae4d4] hover:bg-[#f0ebda] transition" onClick={() => router.push(`/admin/books/new`)}>
             <BookOpen className="w-4 h-4" />
-            Add E-Book
+            Add New Audiobook
           </button>
         </div>
       </div>

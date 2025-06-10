@@ -107,7 +107,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
         <Typography variant="h5" gutterBottom>
           {initialData?.id ? "Edit Book" : "Create New Book"}
         </Typography>
-        {initialData.id && <Button variant="primary" onClick={() => router.push(`/admin/books/${initialData.id}/content`)} text="Manage Content"/>}
+        {initialData.id && <Button variant="primary" onClick={() => router.push(`/admin/books/${initialData.id}/content`)} text="Manage Content" />}
       </Box>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Box
@@ -247,6 +247,14 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
                       {...register("featured")}
                       checked={watch("featured")}
                       onChange={(e) => setValue("featured", e.target.checked)}
+                      sx={{
+                        '& .MuiSwitch-switchBase.Mui-checked': {
+                          color: '#4A2E23', // brown thumb
+                        },
+                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                          backgroundColor: '#4A2E23', // brown track
+                        },
+                      }}
                     />
                   }
                   label="Featured Book"
@@ -271,7 +279,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
               <Typography variant="h6" gutterBottom>
                 Cover Image
               </Typography>
-              <CoverImageUpload  initialUrl={watch("cover_image")} onFileSelect={(fileUrl: string) => {
+              <CoverImageUpload initialUrl={watch("cover_image")} onFileSelect={(fileUrl: string) => {
                 setValue("cover_image_url", fileUrl, { shouldValidate: true });
               }} />
             </Paper>

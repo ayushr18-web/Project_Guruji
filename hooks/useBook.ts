@@ -1,7 +1,7 @@
 // hooks/useBooks.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { API } from '../lib/api';
-import { IBook, IChapterOrBookListResponse } from '../types/books';
+import { IBook, ICategory, IChapterOrBookListResponse } from '../types/books';
 
 // Fetch books list
 export const useBooks = (
@@ -121,7 +121,7 @@ export const useGetBookData = (bookId: string) => {
 export const useGetCategories = () => {
   return useQuery({
     queryKey: ['categories'],
-    queryFn: async (): Promise<Array<string>> => {
+    queryFn: async (): Promise<ICategory[]> => {
       const response = await API.getCategories();
       return response.data;
     },
