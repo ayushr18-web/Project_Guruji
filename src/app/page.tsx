@@ -45,7 +45,7 @@ export default function Home() {
   },
 ];
   return (
-    <div className="bg-[#f9f5ef]">
+    <div className="bg-[#f9f5ef]  w-full mx-0 px-0">
 
       <Header/>
       {/* Section 1 */}
