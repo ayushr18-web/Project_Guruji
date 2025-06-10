@@ -16,11 +16,11 @@ const BookCard = ({ book, category }: { book: IBook,category: ICategory  | {}}) 
       </div>
 
       {/* Cover Image */}
-      <div className="bg-gray-100 h-40 flex items-center justify-center">
+      <div className="bg-gray-100 flex items-center justify-center">
         <img
           src={book.cover_image_url || "/placeholder-cover.png"}
           alt={book.title}
-          className="w-12 h-12 opacity-50"
+          className="w-full h-full object-contain"
         />
       </div>
 

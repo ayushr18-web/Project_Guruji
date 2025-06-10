@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
+import { set } from "react-hook-form";
 
 interface CoverImageUploadProps {
   initialUrl?: string;
@@ -55,6 +56,8 @@ const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initi
     const uploadUrl = data.upload_url;
 
     // 2️⃣ Upload file to S3
+
+    console.log("Uploading file to S3 with URL:", uploadUrl);
     const uploadResponse = await fetch(uploadUrl, {
       method: 'PUT',
       headers: {
@@ -69,6 +72,8 @@ const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initi
 
     // 3️⃣ Return the final S3 URL
     const s3FileUrl = uploadUrl.split('?')[0];
+    onFileSelect(s3FileUrl); // Notify parent component with the new URL
+    setPreviewUrl(s3FileUrl); // Update preview URL
     return s3FileUrl;
   }
 
