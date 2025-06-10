@@ -1,11 +1,10 @@
 'use client';
 
-import { useFormContext } from "@/app/context/FormContext";
+import { usePlaceForm } from "@/app/context/PlaceFormContext";
 
-// import { useFormContext } from '../context/PlaceFormContext';
 
 const DetailsForm = () => {
-  const { formData, setFormData } = useFormContext();
+  const { formData, updateFormData } = usePlaceForm(); 
 
   return (
     <div className="space-y-6">
@@ -17,7 +16,7 @@ const DetailsForm = () => {
           className="w-full border p-3 rounded-md bg-[#f9f6f2]"
           value={formData.religiousImportance || ''}
           onChange={(e) =>
-            setFormData({ ...formData, religiousImportance: e.target.value })
+            updateFormData({ religiousImportance: e.target.value })
           }
         />
         <p className="text-xs text-gray-500 mt-1">
@@ -33,7 +32,7 @@ const DetailsForm = () => {
           className="w-full border p-3 rounded-md bg-[#f9f6f2]"
           value={formData.historicalBackground || ''}
           onChange={(e) =>
-            setFormData({ ...formData, historicalBackground: e.target.value })
+            updateFormData({ historicalBackground: e.target.value })
           }
         />
         <p className="text-xs text-gray-500 mt-1">

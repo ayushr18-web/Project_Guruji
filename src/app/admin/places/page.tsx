@@ -7,6 +7,8 @@ import ActionMenu from '../components/BookListMenu';
 import { useRouter } from 'next/navigation';
 import { BookOpen, FileText } from 'lucide-react';
 import { ROWS_PER_PAGE } from '../../../../constants/book';
+import { FaPlus } from 'react-icons/fa';
+import CustomButton from '@/app/commonComponents/customButton';
 
 
 const UserTable = () => {
@@ -95,10 +97,17 @@ const UserTable = () => {
         <h1 className="text-2xl font-bold text-black">Books Management</h1>
 
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-black bg-[#f9f5e9] border-[#eae4d4] hover:bg-[#f0ebda] transition" onClick={() => router.push(`/admin/places/new`)}>
-            <BookOpen className="w-4 h-4" />
-            Add E-Book
-          </button>
+          {/* <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-black bg-[#f9f5e9] border-[#eae4d4] hover:bg-[#f0ebda] transition" onClick={() => router.push(`/admin/places/new`)}>
+            <FaPlus className="w-4 h-4" />
+            Add Places
+          </button> */}
+           <CustomButton
+                text="Add Places"
+                leftIcon={<FaPlus size={10} />}
+                // rightIcon={<ArrowRight size={16} />}
+                onClick={() => router.push(`/admin/places/new`)}
+                variant="primary"
+              />
         </div>
       </div>
       {deleteBookMutation.isPending ? <>Deleting....</> : <GenericTable<any>
