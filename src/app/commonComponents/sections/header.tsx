@@ -11,6 +11,8 @@ import {
 import Link from 'next/link';
 import ResourceMenu from '../resourceMenue';
 import { UserButton, SignInButton, SignUpButton, useAuth } from '@clerk/nextjs';
+import GuidanceMenu from '../guidenceMenue';
+import AboutMenu from '../AboutMenue';
 
 export default function Header() {
   const { isSignedIn } = useAuth();
@@ -33,26 +35,17 @@ export default function Header() {
           <Home size={16} className="inline-block mr-1" />
           Home
         </Link>
-
-        <ResourceMenu />
-
-        <div className="group relative">
-          <button className="flex items-center gap-1 px-3 py-1.5 hover:text-white hover:bg-[#703e11]">
-            <HelpCircle size={16} />
-            Guidance <ChevronDown size={12} />
-          </button>
+        <div className="flex gap-2">
+          <ResourceMenu />
+          <GuidanceMenu />
+          <AboutMenu/>
         </div>
 
-        <div className="group relative">
-          <button className="flex items-center gap-1 hover:text-white px-3 py-1.5 hover:bg-[#703e11]">
-            <Info size={16} />
-            About <ChevronDown size={12} />
-          </button>
-        </div>
+       
       </nav>
 
       {/* Right: Language + Notifications + Auth */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-ce  Fvnter space-x-4">
         <button className="flex items-center gap-1 px-3 py-1 border rounded-md text-sm">
           <Globe size={16} />
           English
