@@ -104,7 +104,7 @@ export default function Home() {
 
             <div className="mt-6 flex justify-center md:justify-start">
               <CustomButton
-                text="Begin your Journey"
+                text="Discover our mission"
                 leftIcon={<FaTicketAlt size={16} />}
                 rightIcon={<ArrowRight size={16} />}
                 onClick={() => alert('Journey started!')}

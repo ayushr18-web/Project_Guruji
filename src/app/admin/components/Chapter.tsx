@@ -97,7 +97,7 @@ const Chapter = ({ chapter, bookId }: { chapter: IChapter, bookId: string }) => 
                     fontWeight={700}
                     sx={{ flex: 1, fontSize: 26, display: "flex", alignItems: "center" }}
                 >
-                    {`${chapter.chapter_number}. ${chapter.title.toUpperCase()} ( Chapters)`}
+                    {`${chapter.chapter_number}. ${chapter.title.toUpperCase()}`}
                 </Typography>
                 <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
                     <Button

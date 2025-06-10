@@ -266,7 +266,7 @@ const AddEditForm: React.FC<AddEditFormProps> = ({
             </Paper>
 
             <Button
-              text={"Create Book"}
+              text={initialData?.id ? "Update Book" : "Create Book"}
               type="submit"
               variant="primary"
               className="w-full flex justify-center"
