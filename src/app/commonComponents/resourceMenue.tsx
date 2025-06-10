@@ -33,7 +33,7 @@ export default function ResourceMenu() {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute left-10  top-16 z-40 w-[90vw] max-w-4xl bg-[#fdf6e9] border border-orange-200 shadow-xl rounded-md p-6 grid grid-cols-4 gap-6 text-sm"
+          className="absolute absolute transform -translate-x-1/2   top-16 z-40 w-[90vw] max-w-4xl bg-[#fdf6e9] border border-orange-200 shadow-xl rounded-md p-6 grid grid-cols-4 gap-6 text-sm"
         >
           {/* Close Icon */}
           <button
