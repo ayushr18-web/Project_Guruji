@@ -3,12 +3,17 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 type PlaceFormData = {
-  region: string;
-  state: string;
-  city: string;
-  religiousImportance: string;
-  historicalBackground: string;
-  locationDescription: string;
+  region?: string;
+  state?: string;
+  name?:string
+  city?: string;
+  description?:string;
+  categories?:string[],
+  featured?:boolean;
+  country?:string;
+  religiousImportance?: string;
+  historicalBackground?: string;
+  locationDescription?: string;
   latitude?: number;
   longitude?: number;
   coverImage?: File | null;
@@ -24,6 +29,11 @@ const defaultFormData: PlaceFormData = {
   region: '',
   state: '',
   city: '',
+  name: "",
+  description: "",
+  country:"",
+  categories: [],
+  featured:false,
   religiousImportance: '',
   historicalBackground: '',
   locationDescription: '',
