@@ -118,11 +118,11 @@ export const useGetBookData = (bookId: string) => {
   });
 }
 
-export const useGetCategories = () => {
+export const useGetCategories = (type: string) => {
   return useQuery({
     queryKey: ['categories'],
     queryFn: async (): Promise<ICategory[]> => {
-      const response = await API.getCategories();
+      const response = await API.getCategories(type);
       return response.data;
     },
   });
