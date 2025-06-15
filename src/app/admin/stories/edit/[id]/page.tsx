@@ -1,9 +1,9 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation";
-import { useEditBook, useGetCategories } from "../../../../../../hooks/useBook";
+import { useGetCategories } from "../../../../../../hooks/useBook";
 import { Loader } from "lucide-react";
-import { useGetStoryData } from "../../../../../../hooks/useStories";
+import { useEditStory, useGetStoryData } from "../../../../../../hooks/useStories";
 import AddEditStory from "../../components/AddEditStory";
 
 const EditBook = () => {
@@ -15,23 +15,23 @@ const EditBook = () => {
     }
     const { data: storyData, isFetching } = useGetStoryData(storyId);
     const { data: categories } = useGetCategories('BOOK');
-    const updateBookMutation = useEditBook(storyId);
+    const updateStoryMutation = useEditStory(storyId);
 
     const handleSubmit = (data: any) => {
 
-        updateBookMutation.mutate({...data, tags: data?.tags?.split(","), category_id: data?.category}, {
+        updateStoryMutation.mutate({...data, tags: data?.tags?.split(","), category_id: data?.category}, {
             onSuccess: () => {
-                router.push("/admin/books");
+                router.push("/admin/stories");
             },
             onError: (err) => {
-                console.error("Failed to create book:", err);
+                console.error("Failed to create Story:", err);
             },
         });
     };
 
     return (
         <>
-            {(isFetching || updateBookMutation.isPending) ? <Loader /> : <AddEditStory isLoading={false} onSubmit={handleSubmit} initialData={storyData} categories={categories} />}
+            {(isFetching || updateStoryMutation.isPending) ? <Loader /> : <AddEditStory isLoading={false} onSubmit={handleSubmit} initialData={storyData} categories={categories} />}
         </>
     )
 }

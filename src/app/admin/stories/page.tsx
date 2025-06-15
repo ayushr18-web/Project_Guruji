@@ -8,16 +8,17 @@ import { Column, GenericTable } from '../../../../components/Table';
 import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
 import { formatDateToDDMMYYYY } from '../../../../lib/utils';
-import { useGetStories } from '../../../../hooks/useStories';
+import { useDeleteStory, useGetStories } from '../../../../hooks/useStories';
 
 
 const StoriesPage = () => {
     const [page, setPage] = useState(0);
     const { data, isFetching, refetch } = useGetStories({ skip: page * ROWS_PER_PAGE, limit: ROWS_PER_PAGE });
     const router = useRouter();
-    const deleteBookMutation = useDeleteTeaching();
+    const deleteStoryMutation = useDeleteStory();
+    
     const handleDelete = (id: string) => {
-        deleteBookMutation.mutate(id, {
+        deleteStoryMutation.mutate(id, {
             onSuccess: () => {
                 console.log("Story deleted successfully");
                 refetch();
