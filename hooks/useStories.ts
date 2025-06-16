@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { STORIES } from "../services/stories";
 import { IStoryApiResponse, IStoryItem } from "../types/stories";
-import { TEACHINGS } from "../services/teachings";
 
 
 export const useGetStories = (

@@ -1,4 +1,5 @@
 import { Box, Typography } from "@mui/material";
+import { Loader } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { set } from "react-hook-form";
 
@@ -10,12 +11,14 @@ interface CoverImageUploadProps {
 const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initialUrl = "" }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(initialUrl);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Sync external changes to initialUrl
     if (initialUrl) {
       setPreviewUrl(initialUrl);
     }
+    setIsLoading(false);
   }, [initialUrl]);
 
   const handleBoxClick = () => {
@@ -26,11 +29,9 @@ const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initi
     const file = event.target.files?.[0];
     if (!file) return;
 
-    console.log("Selected file:", file);
 
     try {
       const uploadedUrl = await uploadFile(file);
-      console.log("File uploaded to S3:", uploadedUrl);
       // Optional: Save the URL to your backend DB if needed here
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -39,7 +40,8 @@ const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initi
 
   async function uploadFile(file: File) {
     // 1️⃣ Request presigned URL
-    const response = await fetch('http://ec2-13-61-196-239.eu-north-1.compute.amazonaws.com/api/v1/s3_upload/generate-presigned-url', {
+    setIsLoading(true);
+    const response = await fetch(`https://qa.sanatni.com/api/v1/s3_upload/generate-presigned-url`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -74,6 +76,7 @@ const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initi
     const s3FileUrl = uploadUrl.split('?')[0];
     onFileSelect(s3FileUrl); // Notify parent component with the new URL
     setPreviewUrl(s3FileUrl); // Update preview URL
+    setIsLoading(false);
     return s3FileUrl;
   }
 
@@ -99,7 +102,8 @@ const CoverImageUpload: React.FC<CoverImageUploadProps> = ({ onFileSelect, initi
           backgroundColor: "#fafafa",
         }}
       >
-        {previewUrl ? (
+       
+        {isLoading ? <Loader /> :previewUrl ? (
           <img
             src={previewUrl}
             alt="Cover Preview"

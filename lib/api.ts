@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 export const apiClient = axios.create({
-  baseURL: 'http://13.61.196.239/api/v1', // Replace with your actual base URL
+  baseURL: 'https://qa.sanatni.com/api/v1', // Replace with your actual base URL
   headers: {
     'Content-Type': 'application/json',
     'accept': 'application/json',
