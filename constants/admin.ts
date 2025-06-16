@@ -25,7 +25,7 @@ export const menuItems = [
     {
       title: "Dashboard",
       items: [
-        { href: "/admin", label: "Overview", icon: LayoutDashboard },
+        { href: "/admin/overview", label: "Overview", icon: LayoutDashboard },
         { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
       ],
     },

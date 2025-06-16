@@ -2,28 +2,27 @@
 
 import React, { useState } from 'react';
 import { GenericTable, Column } from '../../../../components/Table';
-import { useDeleteBook } from '../../../../hooks/useBook';
 import ActionMenu from '../components/BookListMenu';
 import { useRouter } from 'next/navigation';
 import { ROWS_PER_PAGE } from '../../../../constants/book';
-import { useGetCollections } from '../../../../hooks/useCollections';
+import { useDeleteCollection, useGetCollections } from '../../../../hooks/useCollections';
 import { formatDateToDDMMYYYY } from '../../../../lib/utils';
 
 
 const CollectionTable = () => {
   const [page, setPage] = useState(0);
-  const { data, isFetching } = useGetCollections({ skip: page * ROWS_PER_PAGE, limit: ROWS_PER_PAGE });
+  const { data, isFetching, refetch } = useGetCollections({ skip: page * ROWS_PER_PAGE, limit: ROWS_PER_PAGE });
   const router = useRouter();
 
-  const deleteBookMutation = useDeleteBook();
+  const deleteCollectionMutation = useDeleteCollection();
 
   const handleDelete = (id: string) => {
-    deleteBookMutation.mutate(id, {
+    deleteCollectionMutation.mutate(id, {
       onSuccess: () => {
-        console.log("Book deleted successfully");
+        refetch();
       },
       onError: (error) => {
-        console.error("Failed to delete book:", error);
+        console.error("Failed to delete Collection:", error);
       },
     });
   };
@@ -75,7 +74,7 @@ const CollectionTable = () => {
           </button>
         </div>
       </div>
-      {deleteBookMutation.isPending ? <>Deleting....</> : <GenericTable<any>
+      {deleteCollectionMutation.isPending ? <>Deleting....</> : <GenericTable<any>
         columns={collectionsColumn}
         rows={data?.items || []}
         page={page}

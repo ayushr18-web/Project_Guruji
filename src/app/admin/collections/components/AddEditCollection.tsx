@@ -5,13 +5,8 @@ import {
     Paper,
     Typography,
     TextField,
-    MenuItem,
     Switch,
     FormControlLabel,
-    FormControl,
-    InputLabel,
-    Select,
-    FormHelperText,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -19,53 +14,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import Button from "../../../../../components/Button";
 import CoverImageUpload from "../../components/CoverImageUpload";
-import { ICollectionItem } from "../../../../../types/collections";
+import { ICollection } from "../../../../../types/collections";
+import { inputStyles } from "../../../../../constants/styles";
 
 const formSchema = z.object({
-    // name: z.string().min(1, "name is required"),
-    // description: z.string().min(1, "Description is required"),
-    // category: z.string().min(1, "Category is required"),
-    // featured: z.boolean().optional(),
-    // cover_image_url: z.string().url("Cover image URL must be valid").optional(),
+    name: z.string().min(1, "name is required"),
+    description: z.string().min(1, "Description is required"),
+    is_featured: z.boolean().optional(),
+    cover_image_url: z.string().url("Cover image URL must be valid").optional(),
+    tags: z.string().optional(),
 });
 
 export type FormData = z.infer<typeof formSchema>;
 
 export interface AddEditFormProps {
     isLoading: boolean;
-    onSubmit?: (data: ICollectionItem) => void;
-    initialData?: Partial<ICollectionItem>;
+    onSubmit?: (data: ICollection) => void;
+    initialData?: Partial<ICollection>;
     categories?: any;
 }
 
-const inputStyles = {
-    color: "#4A2E23",
-    "& .MuiInputBase-input": {
-        color: "#4A2E23", // input text
-    },
-    "& .MuiInputLabel-root": {
-        color: "#4A2E23", // label text
-    },
-    "& .MuiFormHelperText-root": {
-        color: "#4A2E23", // helper/error text
-    },
-    "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#4A2E23",
-    },
-    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#4A2E23",
-    },
-    "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#ccc",
-    },
-};
+
 
 
 const AddEditCollection: React.FC<AddEditFormProps> = ({
     onSubmit = null,
     initialData = {},
     isLoading = false,
-    categories
 }) => {
     const router = useRouter();
     const {
@@ -79,9 +54,9 @@ const AddEditCollection: React.FC<AddEditFormProps> = ({
         defaultValues: {
             name: initialData.name || "",
             description: initialData.description || "",
-            category: initialData.category_id || "",
-            featured: initialData.featured || false,
+            is_featured: initialData.is_featured || false,
             cover_image_url: initialData.cover_image_url || "",
+            tags: Array.isArray(initialData.tags) ? initialData.tags.join(",") : "",
             ...initialData, // Spread initialData to set other fields if needed
         },
     });
@@ -135,39 +110,24 @@ const AddEditCollection: React.FC<AddEditFormProps> = ({
                                 sx={inputStyles}
                             />
 
+                            <TextField
+                                {...register("tags")}
+                                label="Tags"
+                                fullWidth
+                                margin="normal"
+                                helperText="Enter tags separated by commas"
+                                sx={inputStyles}
 
-                            <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                                <FormControl
-                                    fullWidth
-                                    error={!!errors.category}
-                                    sx={{ flex: 1, minWidth: 220, ...inputStyles }}
-                                >
-                                    <InputLabel id="category-label">Category *</InputLabel>
-                                    <Select
-                                        labelId="category-label"
-                                        id="category_id"
-                                        {...register("category")}
-                                        label="Category *"
-                                        defaultValue={initialData.category_id || ""}
-                                        onChange={(e) => setValue("category", e.target.value, { shouldValidate: true })}
-                                    >
-                                        {categories?.map((option: any) => (
-                                            <MenuItem key={option.id} value={option.id}>
-                                                {option.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                    <FormHelperText>{errors.category?.message}</FormHelperText>
-                                </FormControl>
-                            </Box>
+                            />
+
 
                             <Box sx={{ mt: 2 }}>
                                 <FormControlLabel
                                     control={
                                         <Switch
-                                            {...register("featured")}
-                                            checked={watch("featured")}
-                                            onChange={(e) => setValue("featured", e.target.checked)}
+                                            {...register("is_featured")}
+                                            checked={watch("is_featured")}
+                                            onChange={(e) => setValue("is_featured", e.target.checked)}
                                             sx={{
                                                 '& .MuiSwitch-switchBase.Mui-checked': {
                                                     color: '#4A2E23', // brown thumb
@@ -178,7 +138,7 @@ const AddEditCollection: React.FC<AddEditFormProps> = ({
                                             }}
                                         />
                                     }
-                                    label="Featured Collection"
+                                    label="is_featured Collection"
                                 />
                                 <Typography variant="body2" color="text.secondary" sx={{ ml: 1 }}>
                                     Display this Collection in the featured section
@@ -190,7 +150,7 @@ const AddEditCollection: React.FC<AddEditFormProps> = ({
                             text={initialData?.id ? "Update Collection" : "Create Collection"}
                             type="submit"
                             variant="primary"
-                            classname="w-full flex justify-center"
+                            className="w-full flex justify-center"
                         />
                     </Box>
 

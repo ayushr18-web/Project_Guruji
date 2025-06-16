@@ -1,6 +1,5 @@
 "use client"
 
-import { useGetCategories } from "../../../../../hooks/useBook";
 import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
 import AddEditCollection from "../components/AddEditCollection";
@@ -10,11 +9,10 @@ const New = () => {
     const router = useRouter();
     const { mutate: createCollection, isPending } = useCreateCollection();
 
-    const { data: categories } = useGetCategories('BOOK');
 
     const handleSubmit = (data: any) => {
 
-        createCollection({...data, category_id: data?.category}, {
+        createCollection({...data,tags: data?.tags.split(",") || []}, {
             onSuccess: () => {
                 router.push("/admin/collections");
             },
@@ -26,7 +24,7 @@ const New = () => {
 
     return (
        <>
-       { isPending ? <Loader /> :  <AddEditCollection onSubmit={handleSubmit} isLoading={isPending} categories={categories}/> }
+       { isPending ? <Loader /> :  <AddEditCollection onSubmit={handleSubmit} isLoading={isPending} /> }
        </>
     );
 };

@@ -14,6 +14,6 @@ export const COLLECTIONS = {
         return apiClient.post('/collections', payload);
     },
     deleteCollection: (id: string) => {
-        return apiClient.delete(`/collection/${id}`);
+        return apiClient.delete(`/collections/${id}`);
     },
 }

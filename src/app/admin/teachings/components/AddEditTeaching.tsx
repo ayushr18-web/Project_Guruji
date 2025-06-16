@@ -21,6 +21,7 @@ import { ITeachings } from "../../../../../types/teachings";
 import Button from "../../../../../components/Button";
 import CoverImageUpload from "../../components/CoverImageUpload";
 import { RichTextEditor } from "../../../../../components/RichTextEditor";
+import { inputStyles } from "../../../../../constants/styles";
 
 const book_formats = [
   { value: "ARTICLE", label: "ARTICLE" },
@@ -48,29 +49,6 @@ export interface AddEditTeachingProps {
   categories?: any;
   isLoading?: boolean;
 }
-
-const inputStyles = {
-  color: "#4A2E23",
-  "& .MuiInputBase-input": {
-    color: "#4A2E23", // input text
-  },
-  "& .MuiInputLabel-root": {
-    color: "#4A2E23", // label text
-  },
-  "& .MuiFormHelperText-root": {
-    color: "#4A2E23", // helper/error text
-  },
-  "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#4A2E23",
-  },
-  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#4A2E23",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#ccc",
-  },
-};
-
 
 const AddEditTeaching: React.FC<AddEditTeachingProps> = ({
   onSubmit = null,

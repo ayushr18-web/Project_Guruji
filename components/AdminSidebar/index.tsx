@@ -13,7 +13,7 @@ const AdminSidebar = () => {
           <ul>
             {section.items.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href;
+              const isActive = pathname.includes(item.href);
 
               return (
                 <li key={item.label}>
