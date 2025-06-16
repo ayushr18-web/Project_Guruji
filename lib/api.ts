@@ -1,8 +1,8 @@
 // src/api/api.ts
 import axios from 'axios';
 
-const apiClient = axios.create({
-  baseURL: 'http://13.61.196.239/api/v1', // Replace with your actual base URL
+export const apiClient = axios.create({
+  baseURL: 'https://qa.sanatni.com/api/v1', // Replace with your actual base URL
   headers: {
     'Content-Type': 'application/json',
     'accept': 'application/json',
@@ -81,8 +81,8 @@ export const API = {
     return apiClient.get(`/books/${bookId}/chapters/${chapterId}/sections`);
   },
 
-  getCategories: () => {
-    return apiClient.get('/categories?type=BOOK&skip=0&limit=25&is_active=true');
+  getCategories: (type: string) => {
+    return apiClient.get(`/categories?type=${type}&skip=0&limit=25&is_active=true`);
   },
 
   deleteChapter: (bookId: string, chapterId: string) => {

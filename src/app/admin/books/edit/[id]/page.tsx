@@ -13,7 +13,7 @@ const EditBook = () => {
         return <div>Book ID not found</div>;
     }
     const { data: bookData, isFetching } = useGetBookData(bookId);
-    const { data: categories } = useGetCategories();
+    const { data: categories } = useGetCategories('BOOK');
     const updateBookMutation = useEditBook(bookId);
 
     const handleSubmit = (data: any) => {

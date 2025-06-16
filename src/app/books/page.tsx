@@ -10,7 +10,7 @@ import { IBook } from "../../../types/books";
 const BooksPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const { data: categories } = useGetCategories();
+  const { data: categories } = useGetCategories('BOOK');
 
   const { data: books, isFetching } = useBooks({
     skip: 0,
