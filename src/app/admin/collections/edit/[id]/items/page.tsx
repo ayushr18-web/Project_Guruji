@@ -53,7 +53,7 @@ const ManageItemsPage = () => {
 
     const handleDeleteItem = (itemId: string) => {
         console.log("Deleting item with ID:", itemId);
-        return;
+        if (!itemId) return;
         deleteItemMutation.mutate(itemId, {
             onSuccess: () => {
                 refetchItems();
