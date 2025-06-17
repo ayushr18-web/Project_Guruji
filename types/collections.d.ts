@@ -47,3 +47,16 @@ export interface IContent {
   created_at: string;
   updated_at: string;
 }
+
+
+export type TContentItem = {
+  content_type: "ARTICLE" | string; // or restrict further if more types exist
+  cover_image_url: string;
+  created_at: string; // You can use `Date` if parsed
+  description: string;
+  id: string;
+  slug: string;
+  status: "PUBLISHED" | "DRAFT" | string; // Add other possible statuses if needed
+  title: string;
+  updated_at: string; // You can use `Date` if parsed
+};
