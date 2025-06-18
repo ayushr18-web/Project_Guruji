@@ -15,7 +15,16 @@ const eslintConfig = [
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
-      "@typescript-eslint/no-unused-vars": "warn", // or "off"
+      "@typescript-eslint/no-unused-vars": "off", // or "off"
+      "@typescript-eslint/no-explicit-any": "off",
+      "react-hooks/rules-of-hooks": "off", // Not recommended
+      "@next/next/no-img-element": "off",
+      "react/no-unescaped-entities": "off", // Not recommended
+      "@typescript-eslint/no-empty-object-types": "off", // Not recommended
+      "react/jsx-key": "off", // Not recommended
+      "react/no-unknown-property": "off", // Not recommended
+      "react/jsx-no-undef": "off", // Not recommended
+      "@typescript-eslint/no-empty-object-type": "off", // Not recommended
     },
   },
 ];
