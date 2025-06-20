@@ -8,6 +8,7 @@ import { useGetTeachings } from "../../../../../../../hooks/useTeachings";
 import { useActiveItems, useAddCollectionItem, useGetCollectionItems, useRemoveCollectionItem } from "../../../../../../../hooks/useCollections";
 import { useParams } from "next/navigation";
 import CollectionItemCard from "../../../components/CollectionItemCard";
+import { ICollectionItem } from "../../../../../../../types/collections";
 
 const ManageItemsPage = () => {
     const params = useParams();
@@ -36,7 +37,7 @@ const ManageItemsPage = () => {
         setSearchText("");
         if (activeTab) {
             addItemMutation.mutate(
-                { content_id: id, collection_id: collectionId, sort_order: 0, notes: "" },
+                { content_id: id, collection_id: collectionId, sort_order: 0, notes: "" } as any,
                 {
                     onSuccess: () => {
                         refetchItems();
@@ -52,7 +53,6 @@ const ManageItemsPage = () => {
     };
 
     const handleDeleteItem = (itemId: string) => {
-        console.log("Deleting item with ID:", itemId);
         if (!itemId) return;
         deleteItemMutation.mutate(itemId, {
             onSuccess: () => {
@@ -121,8 +121,8 @@ const ManageItemsPage = () => {
                 ) : (
                     <div className="flex flex-wrap gap-4">
                         {
-                            collectionItems?.items?.map((collection) => (
-                                <CollectionItemCard key={collection.content_id} content={collection.content} handleDelete={handleDeleteItem} />
+                            collectionItems?.items?.map((collection: ICollectionItem) => (
+                                <CollectionItemCard key={collection.content_id}  collection={collection} handleDelete={handleDeleteItem} />
                             ))
                         }
                     </div>

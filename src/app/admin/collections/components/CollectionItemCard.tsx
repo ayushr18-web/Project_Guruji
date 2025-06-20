@@ -1,9 +1,9 @@
-import { useRouter } from "next/navigation";
-import { TContentItem } from "../../../../../types/collections";
+import { ICollectionItem } from "../../../../../types/collections";
 import { Trash } from "lucide-react";
 
-const CollectionItemCard = ({ content, handleDelete }: { content: TContentItem, handleDelete: (id: string) => void}) => {
-  const router = useRouter();
+const CollectionItemCard = ({ collection, handleDelete }: { collection: ICollectionItem, handleDelete: (id: string) => void}) => {
+  const { content } = collection || {};
+  if (!content) return null;
   return (
     <div
       className="w-64 bg-[#fcf9f3] rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 relative cursor-pointer"
@@ -14,7 +14,7 @@ const CollectionItemCard = ({ content, handleDelete }: { content: TContentItem, 
             className="flex items-center gap-2 w-full text-red-600 hover:bg-red-50"
             onClick={(e) =>{
                
-                handleDelete(content.id);
+                handleDelete(collection.id);
             }}
           >
             <Trash />
