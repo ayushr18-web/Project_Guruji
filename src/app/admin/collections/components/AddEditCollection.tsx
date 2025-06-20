@@ -68,6 +68,7 @@ const AddEditCollection: React.FC<AddEditFormProps> = ({
                 <Typography variant="h5" gutterBottom>
                     {initialData?.id ? "Edit Collection" : "Create New Collection"}
                 </Typography>
+                 {initialData.id && <Button variant="primary" onClick={() => router.push(`/admin/collections/edit/${initialData.id}/items`)} text="Manage Items" />}
             </Box>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <Box

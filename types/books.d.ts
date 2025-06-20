@@ -34,6 +34,8 @@ export interface IChapter {
   description?: string;
   updated_at: string; 
   created_at: string; 
+  audio_url?: string;
+  video_url?: string | null;
 }
 
 

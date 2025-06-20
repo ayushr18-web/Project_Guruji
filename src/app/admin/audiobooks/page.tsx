@@ -11,7 +11,7 @@ import { ROWS_PER_PAGE } from '../../../../constants/book';
 
 const UserTable = () => {
   const [page, setPage] = useState(0);
-  const { data, isFetching } = useBooks({ skip: page * ROWS_PER_PAGE, limit: ROWS_PER_PAGE });
+  const { data, isFetching } = useBooks({ skip: page * ROWS_PER_PAGE, limit: ROWS_PER_PAGE, book_format: "AUDIO" });
   const router = useRouter();
 
   const deleteBookMutation = useDeleteBook();
@@ -28,7 +28,7 @@ const UserTable = () => {
   };
 
 
-  const booksColumns: Column<any>[] = [
+  const audiobookColumn: Column<any>[] = [
     {
       key: 'title',
       label: 'Title',
@@ -77,9 +77,9 @@ const UserTable = () => {
       label: 'Actions',
       render: (row) => (
         <ActionMenu
-          onEdit={() => router.push(`/admin/books/edit/${row.id}`)}
+          onEdit={() => router.push(`/admin/audiobooks/edit/${row.id}`)}
           onDelete={() => handleDelete(row.id)}
-          onView={() => router.push(`/books/${row.id}`)}
+          onView={() => router.push(`/audiobooks/${row.id}`)}
         />
       )
     }
@@ -95,14 +95,14 @@ const UserTable = () => {
         <h1 className="text-2xl font-bold text-black">Audiobooks Management</h1>
 
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-black bg-[#f9f5e9] border-[#eae4d4] hover:bg-[#f0ebda] transition" onClick={() => router.push(`/admin/books/new`)}>
+          <button className="flex items-center gap-2 px-4 py-2 border rounded-lg text-black bg-[#f9f5e9] border-[#eae4d4] hover:bg-[#f0ebda] transition" onClick={() => router.push(`/admin/audiobooks/new`)}>
             <BookOpen className="w-4 h-4" />
             Add New Audiobook
           </button>
         </div>
       </div>
       {deleteBookMutation.isPending ? <>Deleting....</> : <GenericTable<any>
-        columns={booksColumns}
+        columns={audiobookColumn}
         rows={data?.items || []}
         page={page}
         totalCount={data?.total_count || 0}

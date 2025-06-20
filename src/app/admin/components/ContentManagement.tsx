@@ -9,9 +9,9 @@ import {
 import {
   Plus as AddIcon,
 } from "lucide-react";
-import { IChapterOrBookListResponse } from "../../../../types/books";
 import Chapter from "./Chapter";
 import CreateChapterModal from "./CreateChapterModal";
+import { IChapter } from "../../../../types/books";
 
 
 const ContentManagement = ({ chapters, bookId } : { chapters: any, bookId: string}) => {
@@ -51,7 +51,7 @@ const ContentManagement = ({ chapters, bookId } : { chapters: any, bookId: strin
       </Box>
       {isModalOpen && <CreateChapterModal bookId={bookId} open={isModalOpen} onClose={() => setIsModalOpen(false)} />}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-        {chapters?.items?.map((ch) => (
+        {chapters?.items?.map((ch: IChapter) => (
           <Chapter chapter={ch} key={ch.id} bookId={bookId} />
         ))}
       </Box>
