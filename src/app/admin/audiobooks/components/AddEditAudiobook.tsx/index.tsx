@@ -77,7 +77,7 @@ const AddEditAudiobook: React.FC<IAddEditFormProps> = ({
               <Typography variant="h5" gutterBottom>
                 {initialData?.id ? "Edit Book" : "Create New Book"}
               </Typography>
-              {initialData.id && <Button variant="primary" onClick={() => router.push(`/admin/books/edit/${initialData.id}/content`)} text="Manage Chapters" />}
+              {initialData.id && <Button variant="primary" onClick={() => router.push(`/admin/audiobooks/edit/${initialData.id}/content`)} text="Manage Chapters" />}
             </Box>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Box

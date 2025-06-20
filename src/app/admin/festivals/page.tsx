@@ -6,6 +6,7 @@ import ActionMenu from '../components/BookListMenu';
 import { useRouter } from 'next/navigation';
 import { ROWS_PER_PAGE } from '../../../../constants/book';
 import { useDeleteFestival, useGetFestivals } from '../../../../hooks/useFestivals';
+import { formatDateToDDMMYYYY } from '../../../../lib/utils';
 
 
 const FestivalsTable = () => {
@@ -35,7 +36,7 @@ const FestivalsTable = () => {
                 <div className="flex items-center gap-2">
                     {row.cover_image_url && <img
                         src={row.cover_image_url}
-                        alt={row.title}
+                        alt={row.name}
                         className="w-8 h-8 rounded object-cover"
                     />}
                     <span className="text-sm font-medium text-gray-900">{row.name}</span>
@@ -43,8 +44,8 @@ const FestivalsTable = () => {
             ),
         },
         { key: 'hindu_month', label: 'Hindu Month', render: (row) => <span>{row.hindu_month}</span> },
-        { key: 'start_date', label: 'Start Date', render: (row) => <span>{row.start_date}</span> },
-        { key: 'end_date', label: 'End Date', render: (row) => <span>{row.end_date}</span> },
+        { key: 'start_date', label: 'Start Date', render: (row) => <span>{formatDateToDDMMYYYY(row.start_date)}</span> },
+        { key: 'end_date', label: 'End Date', render: (row) => <span>{formatDateToDDMMYYYY(row.end_date)}</span> },
         {
             key: 'actions',
             label: 'Actions',

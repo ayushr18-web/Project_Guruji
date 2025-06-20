@@ -31,9 +31,9 @@ const formSchema = z.object({
     start_date: z.string().min(1, "Start date is required"),
     end_date: z.string().min(1, "End date is required"),
     cover_image_url: z.string().url("Cover image URL must be a valid URL"),
-    alternate_names: z
-        .array(z.string().min(1, "Alternate name cannot be empty"))
-        .min(1, "At least one alternate name is required"),
+    // alternate_names: z
+    //     .array(z.string().min(1, "Alternate name cannot be empty"))
+    //     .min(1, "At least one alternate name is required"),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -58,9 +58,9 @@ const AddEditFestival: React.FC<IAddEditFormProps> = ({
             start_date: initialData.start_date || "",
             end_date: initialData.end_date || "",
             cover_image_url: initialData.cover_image_url || "",
-            alternate_names: Array.isArray(initialData.alternate_names)
-                ? initialData.alternate_names
-                : [initialData.alternate_names || ""],
+            // alternate_names: Array.isArray(initialData.alternate_names)
+            //     ? initialData.alternate_names
+            //     : [initialData.alternate_names || ""],
         },
     });
 
@@ -150,7 +150,7 @@ const AddEditFestival: React.FC<IAddEditFormProps> = ({
                             </TextField>
 
 
-                            <Box mt={3}>
+                            {/* <Box mt={3}>
                                 <Typography variant="subtitle1" mb={1}>
                                     Alternate Names
                                 </Typography>
@@ -184,7 +184,7 @@ const AddEditFestival: React.FC<IAddEditFormProps> = ({
                                 >
                                     Add Alternate Name
                                 </MuiButton>
-                            </Box>
+                            </Box> */}
                         </Paper>
 
                         <Button
