@@ -180,7 +180,6 @@ export const useDeleteChapter = () => {
       await API.deleteChapter(bookId, chapterId);
     },
     onSuccess: (_, variables) => {
-      // Invalidate the chapters list for that book
       queryClient.invalidateQueries({ queryKey: ['chapters', variables.bookId] });
     },
   });
