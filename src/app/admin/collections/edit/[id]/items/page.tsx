@@ -64,7 +64,7 @@ const ManageItemsPage = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4 max-w-xl mx-auto mt-8 p-4">
+        <div className="flex flex-col gap-4 mx-auto mt-8 p-4">
             <h1 className="text-2xl font-bold">Manage Items</h1>
             <p className="text-gray-600">Here you can manage the items in your collection.</p>
 
@@ -119,9 +119,13 @@ const ManageItemsPage = () => {
                 {collectionItems?.items?.length === 0 ? (
                     <p className="text-gray-500">No items added yet.</p>
                 ) : (
-                    collectionItems?.items?.map((collection) => (
-                        <CollectionItemCard key={collection.content_id} content={collection.content} handleDelete={handleDeleteItem} />
-                    ))
+                    <div className="flex flex-wrap gap-4">
+                        {
+                            collectionItems?.items?.map((collection) => (
+                                <CollectionItemCard key={collection.content_id} content={collection.content} handleDelete={handleDeleteItem} />
+                            ))
+                        }
+                    </div>
                 )}
             </div>
         </div>

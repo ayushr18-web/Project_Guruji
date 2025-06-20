@@ -22,6 +22,7 @@ import CoverImageUpload from "../../components/CoverImageUpload";
 import { IStoryItem } from "../../../../../types/stories";
 import { RichTextEditor } from "../../../../../components/RichTextEditor";
 import { inputStyles } from "../../../../../constants/styles";
+import { IAddEditFormProps } from "../../../../../types/common";
 
 const formSchema = z.object({
     title: z.string().min(1, "Title is required"),
@@ -35,14 +36,7 @@ const formSchema = z.object({
 
 export type FormData = z.infer<typeof formSchema>;
 
-export interface AddEditFormProps {
-    isLoading: boolean;
-    onSubmit?: (data: IStoryItem) => void;
-    initialData?: Partial<IStoryItem>;
-    categories?: any;
-}
-
-const AddEditStory: React.FC<AddEditFormProps> = ({
+const AddEditStory: React.FC<IAddEditFormProps> = ({
     onSubmit = null,
     initialData = {},
     isLoading = false,

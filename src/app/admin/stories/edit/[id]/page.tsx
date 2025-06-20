@@ -6,7 +6,7 @@ import { Loader } from "lucide-react";
 import { useEditStory, useGetStoryData } from "../../../../../../hooks/useStories";
 import AddEditStory from "../../components/AddEditStory";
 
-const EditBook = () => {
+const EditStory = () => {
     const params = useParams();
     const storyId = params.id as string;
     const router = useRouter();
@@ -35,4 +35,4 @@ const EditBook = () => {
         </>
     )
 }
-export default EditBook;
+export default EditStory;
