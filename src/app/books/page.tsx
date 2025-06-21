@@ -15,7 +15,7 @@ const BooksPage = () => {
   const { data: books, isFetching } = useBooks({
     skip: 0,
     limit: ROWS_PER_PAGE,
-    category_id: selectedCategory ?? undefined, // Assuming your hook supports this param
+    category_id: selectedCategory ?? undefined,
   });
 
   return (

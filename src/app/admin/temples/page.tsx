@@ -13,7 +13,7 @@ const FestivalsTable = () => {
     const { data, isFetching } = useGetTemples({ skip: page * ROWS_PER_PAGE, limit: ROWS_PER_PAGE });
     const router = useRouter();
 
-   const deleteTempleMutation = useDeleteTemple();
+    const deleteTempleMutation = useDeleteTemple();
 
     const handleDelete = (id: string) => {
         deleteTempleMutation.mutate(id, {
@@ -43,6 +43,15 @@ const FestivalsTable = () => {
             ),
         },
         { key: 'main_deity', label: 'Main Deity', render: (row) => <span>{row.main_deity}</span> },
+        {
+            key: 'place_name',
+            label: 'Place',
+            render: (row) => (
+                <span className="inline-flex items-center gap-2 px-3 py-1 text-sm text-black bg-[#F3F2EE] rounded-full">
+                    {row.place_name}
+                </span>
+            ),
+        },
         {
             key: 'actions',
             label: 'Actions',

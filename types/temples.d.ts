@@ -15,6 +15,7 @@ export interface ITemple {
   created_at: string;
   updated_at: string;
   created_by: string;
+  place_name: string;
 }
 
 export interface ITempleListResponse {

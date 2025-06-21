@@ -47,7 +47,7 @@ export const useCreateTemple = () => {
     return useQuery({
         queryKey: ['temple-data', id],
         queryFn: async (): Promise<ITempleListResponse> => {
-            const response = await TEMPLES.getTemples({ id });
+            const response = await TEMPLES.getTempleData(id);
             return response.data as ITempleListResponse;
         },
         enabled: !!id, // Only run this query if id is defined

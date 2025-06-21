@@ -13,4 +13,7 @@ export const TEMPLES = {
     updateTemple: (id: string, updatedTemple: any) => {
         return apiClient.put(`/temples/${id}`, updatedTemple);
     },
+    getTempleData: (id: string) => {
+        return apiClient.get(`/temples/${id}`);
+    }
 }
