@@ -9,7 +9,7 @@ const New = () => {
     const router = useRouter();
     const { mutate: createBook, isPending } = useCreateBook();
 
-    const { data: categories } = useGetCategories();
+    const { data: categories } = useGetCategories('BOOK');
 
     const handleSubmit = (data: any) => {
 

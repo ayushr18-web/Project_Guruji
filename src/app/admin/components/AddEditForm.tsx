@@ -21,6 +21,7 @@ import Button from "../../../../components/Button";
 import CoverImageUpload from "./CoverImageUpload";
 import { IBook } from "../../../../types/books";
 import { useRouter } from "next/navigation";
+import { inputStyles } from "../../../../constants/styles";
 
 const book_formats = [
   { value: "TEXT", label: "Text (Sections & Chapters)" },
@@ -46,28 +47,6 @@ export interface AddEditFormProps {
   initialData?: Partial<IBook>;
   categories?: any;
 }
-
-const inputStyles = {
-  color: "#4A2E23",
-  "& .MuiInputBase-input": {
-    color: "#4A2E23", // input text
-  },
-  "& .MuiInputLabel-root": {
-    color: "#4A2E23", // label text
-  },
-  "& .MuiFormHelperText-root": {
-    color: "#4A2E23", // helper/error text
-  },
-  "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#4A2E23",
-  },
-  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#4A2E23",
-  },
-  "& .MuiOutlinedInput-notchedOutline": {
-    borderColor: "#ccc",
-  },
-};
 
 
 const AddEditForm: React.FC<AddEditFormProps> = ({

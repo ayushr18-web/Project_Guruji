@@ -118,11 +118,11 @@ export const useGetBookData = (bookId: string) => {
   });
 }
 
-export const useGetCategories = () => {
+export const useGetCategories = (type: string) => {
   return useQuery({
     queryKey: ['categories'],
     queryFn: async (): Promise<ICategory[]> => {
-      const response = await API.getCategories();
+      const response = await API.getCategories(type);
       return response.data;
     },
   });
@@ -180,7 +180,6 @@ export const useDeleteChapter = () => {
       await API.deleteChapter(bookId, chapterId);
     },
     onSuccess: (_, variables) => {
-      // Invalidate the chapters list for that book
       queryClient.invalidateQueries({ queryKey: ['chapters', variables.bookId] });
     },
   });

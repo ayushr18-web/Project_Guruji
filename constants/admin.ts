@@ -25,7 +25,7 @@ export const menuItems = [
     {
       title: "Dashboard",
       items: [
-        { href: "/admin", label: "Overview", icon: LayoutDashboard },
+        { href: "/admin/overview", label: "Overview", icon: LayoutDashboard },
         { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
       ],
     },
@@ -79,3 +79,20 @@ export const menuItems = [
       ],
     },
   ]
+
+
+export const hinduMonths = [
+  { value: "chaitra", label: "Chaitra (Mar – Apr)", month_range: "March – April" },
+  { value: "vaishakha", label: "Vaishakha (Apr – May)", month_range: "April – May" },
+  { value: "jyeshtha", label: "Jyeshtha (May – Jun)", month_range: "May – June" },
+  { value: "ashadha", label: "Ashadha (Jun – Jul)", month_range: "June – July" },
+  { value: "shravana", label: "Shravana (Jul – Aug)", month_range: "July – August" },
+  { value: "bhadrapada", label: "Bhadrapada (Aug – Sep)", month_range: "August – September" },
+  { value: "ashwin", label: "Ashwin (Sep – Oct)", month_range: "September – October" },
+  { value: "kartika", label: "Kartika (Oct – Nov)", month_range: "October – November" },
+  { value: "margashirsha", label: "Margashirsha (Nov – Dec)", month_range: "November – December" },
+  { value: "pausha", label: "Pausha (Dec – Jan)", month_range: "December – January" },
+  { value: "magha", label: "Magha (Jan – Feb)", month_range: "January – February" },
+  { value: "phalguna", label: "Phalguna (Feb – Mar)", month_range: "February – March" }
+];
+

@@ -49,7 +49,7 @@ const UserTable = () => {
       label: 'Tags',
       render: (row) => (
         <div className="flex flex-wrap gap-2">
-          {row?.tags?.map((tag, idx) => (
+          {row?.tags?.map((tag: string, idx: string) => (
             <span
               key={idx}
               className="px-3 py-1 text-sm font-semibold text-black border border-gray-300 rounded-full bg-[#FAF8F6]"
