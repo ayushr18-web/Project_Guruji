@@ -8,11 +8,11 @@ import {
   Divider,
 } from "@mui/material";
 import { IChapter } from "../../../../../types/books";
-import { Delete, DeleteIcon, Edit, Trash } from "lucide-react";
+import { Edit, Trash } from "lucide-react";
 
 interface ChapterListProps {
   chapters: IChapter[];
-  onEdit?: (id: string) => void;
+  onEdit?: (id: IChapter) => void;
   onDelete?: (id: string) => void;
 }
 
@@ -33,7 +33,7 @@ const ChapterList: React.FC<ChapterListProps> = ({ chapters, onEdit, onDelete })
           sx={{ p: 2, borderRadius: 2, backgroundColor: "#f9f9f9" }}
         >
           <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Box>
+            <Box width="80%">
               <Typography variant="subtitle1" fontWeight="bold">
                 {index + 1}. {chapter.title}
               </Typography>

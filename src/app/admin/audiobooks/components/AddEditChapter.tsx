@@ -14,21 +14,21 @@ import { X } from 'lucide-react';
 import { inputStyles } from '../../../../../constants/styles';
 import { useCreateChaper } from '../../../../../hooks/useBook';
 import MediaUpload from '../../../../../components/MediaUpload';
+import { IChapter } from '../../../../../types/books';
 
 interface CreateChapterModalProps {
     open: boolean;
     onClose: () => void;
     id: string;
-    data?: any; // Adjust type as needed
-    chapterId?: string;
+    chapter?: IChapter;
 }
 
 
-const AddEditChapter: React.FC<CreateChapterModalProps> = ({ data, open, onClose, id, chapterId }) => {
-    const [title, setTitle] = useState(data?.title || '');
-    const [audioUrl, setAudioUrl] = useState(data?.audio_url || '');
+const AddEditChapter: React.FC<CreateChapterModalProps> = ({ open, onClose, id, chapter }) => {
+    const [title, setTitle] = useState<string>(chapter?.title || '');
+    const [audioUrl, setAudioUrl] = useState<string>(chapter?.audio_url || '');
 
-    const createChapterMutation = useCreateChaper(id, chapterId);
+    const createChapterMutation = useCreateChaper(id, chapter?.id);
 
     const handleCreate = () => {
         if (!title.trim()) {

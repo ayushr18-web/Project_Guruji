@@ -12,16 +12,18 @@ import {
 import AddEditChapter from "./AddEditChapter";
 import ChaptersList from "./ChaptersList";
 import { useDeleteChapter } from "../../../../../hooks/useBook";
+import { IChapter } from "../../../../../types/books";
 
 const ChaptersContent = ({ chapters, id }: { chapters: any, id: string }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedChapterId, setSelectedChapterId] = useState<string>("");
+    const [selectedChapter, setSelectedChapter] = useState<IChapter | null>(null);
 
     const deleteChapterMutation = useDeleteChapter();
 
-    const handleEditChapter = (cId: string) => {
+    const handleEditChapter = (chapter: IChapter) => {
         // Logic to handle chapter editing
-        setSelectedChapterId(cId);
+        console.log('Editing chapter:', chapter);
+        setSelectedChapter(chapter);
         setIsModalOpen(true);
     };
 
@@ -67,8 +69,8 @@ const ChaptersContent = ({ chapters, id }: { chapters: any, id: string }) => {
                 >
                     Add Chapter
                 </Button>
-                {isModalOpen && <AddEditChapter onClose={() => setIsModalOpen(false)} open={isModalOpen} id={id} chapterId={selectedChapterId} />}
             </Box>
+            {isModalOpen && <AddEditChapter onClose={() => setIsModalOpen(false)} open={isModalOpen} id={id} chapter={selectedChapter} />}
             <ChaptersList chapters={chapters?.items} onEdit={handleEditChapter} onDelete={handleDeleteChapter} />
         </Box>
     );
