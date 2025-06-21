@@ -19,7 +19,7 @@ export default function WisdomTechSection() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const response = await axios.get('http://13.61.196.239/api/v1/homepage/cards');
+        const response = await axios.get('https://qa.sanatni.com/api/v1/homepage/cards');
         setCards(response.data.cards || []);
       } catch (error) {
         console.error('Error fetching cards:', error);
